@@ -62,6 +62,7 @@ const KklAgtPage: Component = () => {
           </div>
           <KklAgtForm
             initialData={agtManagement.editingAgt() || undefined}
+            agts={agtManagement.agts()}
             klps={agtManagement.klps()}
             mahasiswas={agtManagement.mahasiswas()}
             instansis={agtManagement.instansis()}

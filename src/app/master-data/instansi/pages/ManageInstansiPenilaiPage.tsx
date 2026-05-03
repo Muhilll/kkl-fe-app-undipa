@@ -9,6 +9,7 @@ import InstansiPenilaiTable from "../../instansi-penilai/pages/Table";
 import { instansiPenilaiAPI } from "../../instansi-penilai/service/instansi-penilai.api";
 import { instansiAPI } from "../service/instansi.api";
 import { kklKlpAPI } from "../../../kkl-klp/service/kkl-klp.api";
+import { kklPeriodeAPI } from "../../kkl-periode/service/kkl-periode.api";
 import type { InstansiPenilai, CreateInstansiPenilaiInput, UpdateInstansiPenilaiInput } from "../../instansi-penilai/type/instansi-penilai";
 import type { Instansi } from "../type/instansi";
 
@@ -28,6 +29,7 @@ const ManageInstansiPenilaiPage: Component = () => {
   const [instansiPenilais, setInstansiPenilais] = createSignal<InstansiPenilai[]>([]);
   const [instansi, setInstansi] = createSignal<Instansi | null>(null);
   const [klps, setKlps] = createSignal<any[]>([]); // Filtered KLPs for this instansi
+  const [periodes, setPeriodes] = createSignal<any[]>([]);
 
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
@@ -41,10 +43,11 @@ const ManageInstansiPenilaiPage: Component = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const [ipRes, instansiRes, klpRes] = await Promise.all([
+      const [ipRes, instansiRes, klpRes, periodeRes] = await Promise.all([
         instansiPenilaiAPI.getAll(),
         instansiAPI.getById(String(instansiId)),
         kklKlpAPI.getAll(),
+        kklPeriodeAPI.getAll()
       ]);
 
       if (instansiRes.success && instansiRes.data) {
@@ -60,6 +63,10 @@ const ManageInstansiPenilaiPage: Component = () => {
 
       if (ipRes.success && ipRes.data) {
         setInstansiPenilais(ipRes.data.filter(ip => validKlpIds.includes(ip.kkl_klp_id)));
+      }
+
+      if (periodeRes.success && periodeRes.data) {
+        setPeriodes(periodeRes.data);
       }
 
     } catch (e) {
@@ -139,6 +146,15 @@ const ManageInstansiPenilaiPage: Component = () => {
     }
   };
 
+  const availableKlps = () => {
+    const takenKlpIds = instansiPenilais().map(ip => ip.kkl_klp_id);
+    const editingId = editingInstansiPenilai()?.kkl_klp_id;
+    return klps().filter(k => {
+      if (k.id === editingId) return true;
+      return !takenKlpIds.includes(k.id);
+    });
+  };
+
   return (
     <div class="user-page">
       <div style={{ "margin-bottom": "20px" }}>
@@ -186,7 +202,10 @@ const ManageInstansiPenilaiPage: Component = () => {
           </div>
           <InstansiPenilaiForm
             initialData={editingInstansiPenilai() || undefined}
-            klps={klps()}
+            klps={availableKlps()}
+            instansis={instansi() ? [instansi()!] : []}
+            periodes={periodes()}
+            fixedInstansiId={instansiId}
             onSubmit={submitInstansiPenilai}
             isLoading={isLoading()}
           />

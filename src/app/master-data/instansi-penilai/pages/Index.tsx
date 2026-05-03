@@ -47,7 +47,9 @@ const InstansiPenilaiPage: Component = () => {
           </div>
           <InstansiPenilaiForm
             initialData={management.editingInstansiPenilai() || undefined}
-            klps={management.klps()}
+            klps={management.availableKlps()}
+            instansis={management.instansis()}
+            periodes={management.periodes()}
             onSubmit={management.handleSubmit}
             isLoading={management.isLoading()}
           />

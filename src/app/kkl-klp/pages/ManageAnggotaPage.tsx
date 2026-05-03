@@ -95,7 +95,13 @@ const ManageAnggotaPage: Component = () => {
   };
 
   const availableMahasiswas = () => {
-    const usedMhsIds = allAgts().map(a => a.mahasiswa_id);
+    const currentPeriodeId = klp()?.kkl_periode?.id;
+    if (!currentPeriodeId) return mahasiswas();
+
+    const usedMhsIds = allAgts()
+      .filter(a => a.kkl_klp?.kkl_periode?.id === currentPeriodeId)
+      .map(a => a.mahasiswa_id);
+      
     return mahasiswas().filter(m => !usedMhsIds.includes(m.id));
   };
 

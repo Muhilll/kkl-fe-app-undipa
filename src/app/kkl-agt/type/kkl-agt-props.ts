@@ -11,6 +11,7 @@ export interface KklAgtTableProps {
 
 export interface KklAgtFormProps {
   initialData?: KklAgt;
+  agts: KklAgt[];
   klps: any[];
   mahasiswas: any[];
   instansis: any[];

@@ -13,6 +13,9 @@ export interface InstansiPenilaiTableProps {
 export interface InstansiPenilaiFormProps {
   initialData?: InstansiPenilai;
   klps: any[]; // List of KKL Kelompok to choose from
+  instansis: any[];
+  periodes: any[];
+  fixedInstansiId?: number;
   onSubmit: (data: CreateInstansiPenilaiInput | UpdateInstansiPenilaiInput) => void;
   isLoading: boolean;
 }

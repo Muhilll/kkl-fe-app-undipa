@@ -115,9 +115,19 @@ export const useInstansiPenilaiManagement = () => {
     }
   };
 
+  const availableKlps = () => {
+    const takenKlpIds = instansiPenilais().map(ip => ip.kkl_klp_id);
+    const editingId = editingInstansiPenilai()?.kkl_klp_id;
+    return klps().filter(k => {
+      if (k.id === editingId) return true;
+      return !takenKlpIds.includes(k.id);
+    });
+  };
+
   return {
     instansiPenilais,
     klps,
+    availableKlps,
     instansis,
     periodes,
     isLoading,

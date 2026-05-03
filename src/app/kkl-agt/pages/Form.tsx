@@ -15,6 +15,17 @@ const KklAgtForm: Component<KklAgtFormProps> = (props) => {
   const [selectedInstansiId, setSelectedInstansiId] = createSignal<string>("");
   const [selectedPeriodeId, setSelectedPeriodeId] = createSignal<string>("");
 
+  const availableMahasiswas = createMemo(() => {
+    const currentPeriodeId = Number(selectedPeriodeId());
+    if (!currentPeriodeId) return props.mahasiswas;
+
+    const usedMhsIds = props.agts
+      .filter(a => a.kkl_klp?.kkl_periode?.id === currentPeriodeId && a.id !== props.initialData?.id)
+      .map(a => a.mahasiswa_id);
+
+    return props.mahasiswas.filter(m => !usedMhsIds.includes(m.id));
+  });
+
   createEffect(() => {
     if (props.initialData) {
       const klpId = props.initialData.kkl_klp_id;
@@ -121,11 +132,11 @@ const KklAgtForm: Component<KklAgtFormProps> = (props) => {
           class="form-select"
           value={formData().mahasiswa_id || ""}
           onChange={(e) => handleChange("mahasiswa_id", e.target.value)}
-          disabled={props.isLoading || !!props.initialData}
+          disabled={props.isLoading}
           required
         >
           <option value="" disabled selected>Pilih Mahasiswa</option>
-          <For each={props.mahasiswas}>
+          <For each={availableMahasiswas()}>
             {(mahasiswa) => (
               <option value={mahasiswa.id}>
                 {mahasiswa.nama} ({mahasiswa.nim})

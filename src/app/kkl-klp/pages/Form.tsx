@@ -13,9 +13,13 @@ const KklKlpForm: Component<KklKlpFormProps> = (props) => {
   };
 
   const availableDosens = () => {
+    const currentPeriodeId = Number(formData().kkl_periode_id);
+    if (!currentPeriodeId) return props.dosens;
+
     const usedDosenIds = props.klps
-      .map(k => k.dosen_id)
-      .filter(id => id !== props.initialData?.dosen_id);
+      .filter(k => k.kkl_periode_id === currentPeriodeId && k.id !== props.initialData?.id)
+      .map(k => k.dosen_id);
+      
     return props.dosens.filter(d => !usedDosenIds.includes(d.id));
   };
 
