@@ -10,6 +10,9 @@ import { roleRoutes } from '../app/master-data/role/route';
 import { userRoutes } from '../app/master-data/user/route';
 import { menuRoutes } from '../app/web-management/menu/route';
 import { rolePermissionRoutes } from '../app/web-management/role-permission/route';
+import { jurusanRoutes } from '../app/master-data/jurusan/route';
+import { mahasiswaRoutes } from '../app/master-data/mahasiswa/route';
+import { dosenRoutes } from '../app/master-data/dosen/route';
 
 import Layout from '../components/layout/Index';
 import { ParentComponent } from 'solid-js';
@@ -40,6 +43,9 @@ export const routeConfig = (
       {rolePermissionRoutes}
       {roleRoutes}
       {userRoutes}
+      {jurusanRoutes}
+      {mahasiswaRoutes}
+      {dosenRoutes}
     </Route>
   </>
 );

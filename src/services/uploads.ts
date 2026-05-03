@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-export type UploadTarget = "absensi" | "dissemination_details";
+export type UploadTarget = "mahasiswa" | "laporan" | "dosen";
 
 interface UploadSignatureRequest {
   target: UploadTarget;

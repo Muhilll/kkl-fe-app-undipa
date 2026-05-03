@@ -57,15 +57,23 @@ const UserForm: Component<UserFormProps> = (props) => {
         onChange={(value) => handleChange("role_id", value)}
       />
 
-      <div class="form-group" style={{ display: "flex", "align-items": "center", gap: "8px", "margin-top": "16px" }}>
-        <input
-          id="is_active"
-          type="checkbox"
-          checked={formData().is_active}
-          onChange={(e) => handleChange("is_active", e.target.checked)}
-          disabled={props.isLoading}
-        />
-        <label for="is_active" style={{ margin: 0 }}>Is Active</label>
+      <div class="toggle-field">
+        <span class="toggle-field-label">Is Active</span>
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input
+              id="is_active"
+              type="checkbox"
+              checked={formData().is_active}
+              onChange={(e) => handleChange("is_active", e.target.checked)}
+              disabled={props.isLoading}
+            />
+            <span class="toggle-track" />
+          </label>
+          <span class={`toggle-value-label ${formData().is_active ? "is-active" : "is-inactive"}`}>
+            {formData().is_active ? "Active" : "Inactive"}
+          </span>
+        </div>
       </div>
 
       <button type="submit" class="btn-submit" disabled={props.isLoading}>
