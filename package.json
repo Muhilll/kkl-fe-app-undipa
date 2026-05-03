@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "description": "",
   "type": "module",
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "start": "node server.js",
-  "serve": "vite preview"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "node server.js",
+    "serve": "vite preview"
+  },
   "license": "MIT",
   "devDependencies": {
     "solid-devtools": "^0.34.3",
@@ -17,7 +17,9 @@
     "vite-plugin-solid": "^2.11.8"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^2.0.2",
     "@solidjs/router": "^0.16.1",
+    "@types/google.maps": "^3.64.0",
     "docx": "^9.5.1",
     "html2pdf.js": "^0.10.3",
     "serve": "^14.2.6",
