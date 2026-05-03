@@ -34,7 +34,7 @@ const KklKlpPage: Component = () => {
       <Toast toast={klpManagement.toast()} onClose={klpManagement.clearToast} />
 
       <PageHeader
-        title="KKL Kelompok Management"
+        title="Kelompok KKL Management"
         description="Manage kelompok pembagian mahasiswa berdasarkan periode, instansi, dan dosen."
         action={permissions.canCreate() ? (
           <button class="btn-create" onClick={klpManagement.openCreateForm}>

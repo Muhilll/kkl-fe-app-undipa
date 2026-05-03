@@ -34,7 +34,7 @@ const KklPeriodePage: Component = () => {
       <Toast toast={periodeManagement.toast()} onClose={periodeManagement.clearToast} />
 
       <PageHeader
-        title="KKL Periode Management"
+        title="Periode KKL Management"
         description="Manage periodes, years, and group limits for KKL."
         action={permissions.canCreate() ? (
           <button class="btn-create" onClick={periodeManagement.openCreateForm}>
