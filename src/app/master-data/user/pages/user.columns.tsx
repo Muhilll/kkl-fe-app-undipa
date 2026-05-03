@@ -41,9 +41,9 @@ export const createUserColumns = (
   props: Pick<UserTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<User>[] => [
   { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "Name", cell: (user) => <>{user.name}</> },
-  { header: "Email", cell: (user) => <>{user.email}</> },
+  { header: "Username", cell: (user) => <>{user.username}</> },
   { header: "Role", cell: (user) => <>{user.role?.name || user.role_id}</> },
+  { header: "Status", cell: (user) => <>{user.is_active ? "Active" : "Inactive"}</> },
   {
     header: "Actions",
     headerStyle: { "text-align": "right" },

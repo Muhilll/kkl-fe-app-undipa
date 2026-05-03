@@ -19,26 +19,13 @@ const UserForm: Component<UserFormProps> = (props) => {
   return (
     <form onSubmit={handleSubmit} class="user-form">
       <div class="form-group">
-        <label for="name">Name</label>
+        <label for="username">Username</label>
         <input
-          id="name"
+          id="username"
           type="text"
-          value={formData().name}
-          onChange={(e) => handleChange("name", e.target.value)}
-          placeholder="Full name"
-          required
-          disabled={props.isLoading}
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          value={formData().email}
-          onChange={(e) => handleChange("email", e.target.value)}
-          placeholder="user@example.com"
+          value={formData().username}
+          onChange={(e) => handleChange("username", e.target.value)}
+          placeholder="Username"
           required
           disabled={props.isLoading}
         />
@@ -59,7 +46,7 @@ const UserForm: Component<UserFormProps> = (props) => {
 
       <LookupSelect
         id="role_id"
-        label="Role ID"
+        label="Role"
         value={String(formData().role_id)}
         options={roles()}
         placeholder="Select role"
@@ -69,6 +56,17 @@ const UserForm: Component<UserFormProps> = (props) => {
         getLabel={(role) => `${role.name} (${role.code})`}
         onChange={(value) => handleChange("role_id", value)}
       />
+
+      <div class="form-group" style={{ display: "flex", "align-items": "center", gap: "8px", "margin-top": "16px" }}>
+        <input
+          id="is_active"
+          type="checkbox"
+          checked={formData().is_active}
+          onChange={(e) => handleChange("is_active", e.target.checked)}
+          disabled={props.isLoading}
+        />
+        <label for="is_active" style={{ margin: 0 }}>Is Active</label>
+      </div>
 
       <button type="submit" class="btn-submit" disabled={props.isLoading}>
         {props.isLoading ? "Loading..." : props.initialData ? "Update User" : "Add User"}

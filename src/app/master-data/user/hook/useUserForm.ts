@@ -7,9 +7,9 @@ interface UseUserFormParams {
 
 export const useUserForm = (params: UseUserFormParams) => {
   const [formData, setFormData] = createSignal<UserFormData>({
-    email: params.initialData()?.email || "",
+    username: params.initialData()?.username || "",
     password: "",
-    name: params.initialData()?.name || "",
+    is_active: params.initialData()?.is_active ?? true,
     role_id: params.initialData()?.role_id
       ? String(params.initialData()!.role_id)
       : "",
@@ -19,15 +19,15 @@ export const useUserForm = (params: UseUserFormParams) => {
     const user = params.initialData();
 
     setFormData({
-      email: user?.email || "",
+      username: user?.username || "",
       password: "",
-      name: user?.name || "",
+      is_active: user?.is_active ?? true,
       role_id: user?.role_id ? String(user.role_id) : "",
     });
   });
 
-  const handleChange = (field: keyof UserFormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (field: keyof UserFormData, value: string | boolean) => {
+    setFormData((prev) => ({ ...prev, [field]: value as never }));
   };
 
   return {

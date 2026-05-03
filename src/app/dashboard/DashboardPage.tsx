@@ -23,8 +23,7 @@ const DashboardPage: Component = () => {
       <PageHeader title="Dashboard" description="Welcome to your dashboard!" />
 
       <div class="user-info">
-        <h2>Welcome, {auth.user()?.name}!</h2>
-        <p>Email: {auth.user()?.email}</p>
+        <h2>Welcome, {auth.user()?.username}!</h2>
       </div>
 
       <style>{`

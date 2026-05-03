@@ -2,8 +2,8 @@ import { Role } from "../../role/type/role";
 
 export interface User {
   id: number;
-  email: string;
-  name: string;
+  username: string;
+  is_active: boolean;
   role_id: number;
   created_at: string;
   updated_at: string;
@@ -11,22 +11,22 @@ export interface User {
 }
 
 export interface CreateUserInput {
-  email: string;
+  username: string;
   password?: string;
-  name: string;
+  is_active?: boolean;
   role_id: number;
 }
 
 export interface UpdateUserInput {
-  email?: string;
+  username?: string;
   password?: string;
-  name?: string;
+  is_active?: boolean;
   role_id?: number;
 }
 
 export interface UserFormData {
-  email: string;
+  username: string;
   password?: string;
-  name: string;
+  is_active: boolean;
   role_id: string;
 }

@@ -6,7 +6,7 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export interface LoginRequest {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -16,9 +16,9 @@ export interface LoginResponse {
     token: string;
     user: {
       id: number;
-      email: string;
-      name: string;
+      username: string;
       role_id: number;
+      is_active: boolean;
     };
   };
   message: string;
@@ -26,7 +26,7 @@ export interface LoginResponse {
 
 export const authAPI = {
   /**
-   * Login user with email and password
+   * Login user with username and password
    * Note: No X-App-Token header for login (user not authenticated yet)
    */
   login: async (credentials: LoginRequest): Promise<LoginResponse> => {
@@ -53,9 +53,9 @@ export const authAPI = {
           token: '',
           user: {
             id: 0,
-            email: '',
-            name: '',
+            username: '',
             role_id: 0,
+            is_active: false,
           },
         },
         message: error instanceof Error ? error.message : 'Login failed',
@@ -63,4 +63,3 @@ export const authAPI = {
     }
   },
 };
-

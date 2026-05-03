@@ -13,9 +13,9 @@ import {
 
 export interface AuthUser {
   id: number;
-  email: string;
-  name: string;
+  username: string;
   role_id: number;
+  is_active: boolean;
 }
 
 export interface AuthContextType {

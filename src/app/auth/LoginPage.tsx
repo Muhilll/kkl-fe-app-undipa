@@ -7,7 +7,7 @@ const LoginPage: Component = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const [email, setEmail] = createSignal("");
+  const [username, setUsername] = createSignal("");
   const [password, setPassword] = createSignal("");
   const [showPassword, setShowPassword] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
@@ -20,7 +20,7 @@ const LoginPage: Component = () => {
 
     try {
       const response = await authAPI.login({
-        email: email(),
+        username: username(),
         password: password(),
       });
 
@@ -71,17 +71,21 @@ const LoginPage: Component = () => {
 
           <form onSubmit={handleSubmit} class="auth-form">
             <div class="form-group">
-              <label for="email">Email Address</label>
+              <label for="username">Username</label>
               <div class="auth-input-wrap">
                 <span class="auth-input-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <path
-                      d="M4 7.5A1.5 1.5 0 0 1 5.5 6h13A1.5 1.5 0 0 1 20 7.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5v-9Z"
+                      d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
                       stroke="currentColor"
                       stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                     />
-                    <path
-                      d="m5 8 7 5 7-5"
+                    <circle
+                      cx="12"
+                      cy="7"
+                      r="4"
                       stroke="currentColor"
                       stroke-width="1.8"
                       stroke-linecap="round"
@@ -90,11 +94,11 @@ const LoginPage: Component = () => {
                   </svg>
                 </span>
                 <input
-                  id="email"
-                  type="email"
-                  value={email()}
-                  onInput={(e) => setEmail(e.currentTarget.value)}
-                  placeholder="name@agency.gov.id"
+                  id="username"
+                  type="text"
+                  value={username()}
+                  onInput={(e) => setUsername(e.currentTarget.value)}
+                  placeholder="admin"
                   required
                   disabled={isLoading()}
                 />
