@@ -1,0 +1,29 @@
+{
+  "name": "vite-template-solid",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "start": "node server.js",
+  "serve": "vite preview"
+},
+  "license": "MIT",
+  "devDependencies": {
+    "solid-devtools": "^0.34.3",
+    "typescript": "^5.7.2",
+    "vite": "^7.1.4",
+    "vite-plugin-solid": "^2.11.8"
+  },
+  "dependencies": {
+    "@solidjs/router": "^0.16.1",
+    "docx": "^9.5.1",
+    "html2pdf.js": "^0.10.3",
+    "serve": "^14.2.6",
+    "solid-js": "^1.9.5"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}

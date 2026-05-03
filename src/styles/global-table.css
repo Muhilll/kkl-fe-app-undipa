@@ -1,0 +1,246 @@
+:root {
+  --green-900: #14532d;
+  --green-800: #166534;
+  --green-700: #15803d;
+  --green-600: #16a34a;
+  --green-50: #f0fdf4;
+  --gray-900: #111827;
+  --gray-700: #374151;
+  --gray-500: #6b7280;
+  --gray-400: #9ca3af;
+  --gray-300: #d1d5db;
+  --gray-200: #e5e7eb;
+  --gray-100: #f3f4f6;
+  --gray-50: #f9fafb;
+  --red-600: #dc2626;
+  --red-100: #fee2e2;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.app-table-card,
+.users-table-card {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.app-table-scroll,
+.users-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-table,
+.users-table {
+  width: 100%;
+  min-width: 1180px;
+  border-collapse: collapse;
+}
+
+.app-table thead tr,
+.users-table thead tr {
+  border-bottom: 1px solid var(--gray-200);
+  background: var(--gray-50);
+}
+
+.app-table thead th,
+.users-table thead th {
+  padding: 13px 20px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.app-table tbody tr,
+.users-table tbody tr {
+  border-bottom: 1px solid var(--gray-100);
+  transition: background 0.12s;
+}
+
+.app-table tbody tr:last-child,
+.users-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.app-table tbody tr:hover,
+.users-table tbody tr:hover {
+  background: var(--gray-50);
+}
+
+.app-table tbody td,
+.users-table tbody td {
+  padding: 18px 20px;
+  vertical-align: middle;
+  font-size: 13.5px;
+  color: var(--gray-700);
+}
+
+.td-actions {
+  width: 140px;
+}
+
+.action-btns {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--gray-400);
+  transition: color 0.15s, background 0.15s;
+}
+
+.btn-icon:hover {
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+
+.btn-icon.btn-edit:hover {
+  color: var(--gray-700);
+}
+
+.btn-icon.btn-detail:hover {
+  color: var(--gray-700);
+}
+
+.btn-icon.btn-delete {
+  color: var(--red-600);
+  opacity: 0.7;
+}
+
+.btn-icon.btn-delete:hover {
+  background: var(--red-100);
+  opacity: 1;
+  color: var(--red-600);
+}
+
+.table-loading,
+.table-empty {
+  padding: 48px;
+  text-align: center;
+  color: var(--gray-400);
+  font-size: 14px;
+}
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1px solid var(--gray-100);
+}
+
+.pagination-info {
+  font-size: 13px;
+  color: var(--gray-500);
+}
+
+.pagination-info strong {
+  color: var(--gray-900);
+  font-weight: 600;
+}
+
+.pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-btn {
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid var(--gray-200);
+  background: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-700);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--green-50);
+  border-color: var(--green-600);
+  color: var(--green-800);
+}
+
+.page-btn.active {
+  background: var(--green-800);
+  border-color: var(--green-800);
+  color: #fff;
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.page-dots {
+  font-size: 13px;
+  color: var(--gray-400);
+  padding: 0 4px;
+}
+
+.table-image-thumb {
+  width: 72px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+  font-size: 12px;
+}
+
+.table-image-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .app-table-card,
+  .users-table-card {
+    border-radius: 12px;
+  }
+
+  .table-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .pagination-nav {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
