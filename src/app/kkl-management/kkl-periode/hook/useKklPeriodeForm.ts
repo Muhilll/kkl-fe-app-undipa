@@ -13,7 +13,7 @@ export const useKklPeriodeForm = (params: UseKklPeriodeFormParams) => {
     tahun: params.initialData()?.tahun || currentYear,
     semester: params.initialData()?.semester || "ganjil",
     max_agt_klp: params.initialData()?.max_agt_klp || 5,
-    is_active: params.initialData()?.is_active ?? true,
+    is_active: params.initialData()?.is_active ?? false,
   });
 
   createEffect(() => {
@@ -23,7 +23,7 @@ export const useKklPeriodeForm = (params: UseKklPeriodeFormParams) => {
       tahun: data?.tahun || currentYear,
       semester: data?.semester || "ganjil",
       max_agt_klp: data?.max_agt_klp || 5,
-      is_active: data?.is_active ?? true,
+      is_active: data?.is_active ?? false,
     });
   });
 

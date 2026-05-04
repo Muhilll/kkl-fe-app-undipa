@@ -95,11 +95,36 @@ export const useKklPeriodeCrud = (params: UseKklPeriodeCrudParams) => {
     }
   };
 
+  const activatePeriode = async (id: string) => {
+    params.setIsLoading(true);
+    params.setError(null);
+
+    try {
+      const result = await kklPeriodeAPI.activate(id);
+
+      if (result.success) {
+        await fetchPeriodes();
+        showToast("success", result.message || "Periode activated successfully");
+      } else {
+        const message = result.error || "Failed to activate periode";
+        params.setError(message);
+        showToast("error", message);
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      params.setError(message);
+      showToast("error", message);
+    } finally {
+      params.setIsLoading(false);
+    }
+  };
+
   return {
     toast,
     clearToast,
     fetchPeriodes,
     submitPeriode,
     deletePeriode,
+    activatePeriode,
   };
 };

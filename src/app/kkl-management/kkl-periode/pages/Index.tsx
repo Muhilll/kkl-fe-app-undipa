@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js";
+import { Component, For, Show, createMemo } from "solid-js";
 import ConfirmModal from "../../../../components/ui/ConfirmModal";
 import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
@@ -28,6 +28,9 @@ const IconPlusCircle = () => (
 const KklPeriodePage: Component = () => {
   const periodeManagement = useKklPeriodeManagement();
   const permissions = usePagePermissions();
+  const activePeriode = createMemo(() =>
+    periodeManagement.periodes().find((periode) => periode.is_active),
+  );
 
   return (
     <div class="user-page">
@@ -47,6 +50,42 @@ const KklPeriodePage: Component = () => {
       <Show when={periodeManagement.error()}>
         <div class="error-message">{periodeManagement.error()}</div>
       </Show>
+
+      <div class="active-periode-panel">
+        <div class="active-periode-summary">
+          <span class="active-periode-label">Periode KKL Aktif</span>
+          <strong>
+            {activePeriode()
+              ? `${activePeriode()!.nama} (${activePeriode()!.tahun} - ${activePeriode()!.semester})`
+              : "Belum ada periode aktif"}
+          </strong>
+        </div>
+        <div class="active-periode-control">
+          <select
+            class="form-select"
+            value={periodeManagement.selectedActivePeriodeId() || activePeriode()?.id.toString() || ""}
+            onChange={(e) => periodeManagement.setSelectedActivePeriodeId(e.target.value)}
+            disabled={periodeManagement.isLoading() || !permissions.canUpdate()}
+          >
+            <option value="">Pilih periode</option>
+            <For each={periodeManagement.periodes()}>
+              {(periode) => (
+                <option value={periode.id}>
+                  {periode.nama} ({periode.tahun} - {periode.semester})
+                </option>
+              )}
+            </For>
+          </select>
+          <button
+            class="btn-create"
+            type="button"
+            onClick={periodeManagement.handleActivatePeriode}
+            disabled={periodeManagement.isLoading() || !permissions.canUpdate()}
+          >
+            Set Aktif
+          </button>
+        </div>
+      </div>
 
       <Modal open={periodeManagement.showForm()} onClose={periodeManagement.closeForm}>
         <div class="form-section">

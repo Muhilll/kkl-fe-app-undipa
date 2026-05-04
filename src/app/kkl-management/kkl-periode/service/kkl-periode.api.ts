@@ -7,5 +7,7 @@ export const kklPeriodeAPI = {
   create: (data: CreateKklPeriodeInput) => api.post<KklPeriode>("/kkl-periodes", data),
   update: (id: string, data: UpdateKklPeriodeInput) =>
     api.put<KklPeriode>(`/kkl-periodes/${id}`, data),
+  activate: (id: string) =>
+    api.put<KklPeriode>(`/kkl-periodes/${id}/activate`, {}),
   delete: (id: string) => api.delete<void>(`/kkl-periodes/${id}`),
 };

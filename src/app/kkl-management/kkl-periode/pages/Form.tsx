@@ -71,18 +71,6 @@ const KklPeriodeForm: Component<KklPeriodeFormProps> = (props) => {
         />
       </div>
 
-      <div class="form-group checkbox-group">
-        <label>
-          <input
-            type="checkbox"
-            checked={formData().is_active}
-            onChange={(e) => handleChange("is_active", e.target.checked)}
-            disabled={props.isLoading}
-          />
-          Is Active
-        </label>
-      </div>
-
       <button type="submit" class="btn-submit" disabled={props.isLoading}>
         {props.isLoading ? "Loading..." : props.initialData ? "Update Periode" : "Add Periode"}
       </button>

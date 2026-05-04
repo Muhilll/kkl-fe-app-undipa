@@ -9,8 +9,9 @@ export const useKklPeriodeManagement = () => {
   const [editingPeriode, setEditingPeriode] = createSignal<KklPeriode | null>(null);
   const [showForm, setShowForm] = createSignal(false);
   const [deletingPeriodeId, setDeletingPeriodeId] = createSignal<string | null>(null);
+  const [selectedActivePeriodeId, setSelectedActivePeriodeId] = createSignal("");
 
-  const { toast, clearToast, fetchPeriodes, submitPeriode, deletePeriode } = useKklPeriodeCrud({
+  const { toast, clearToast, fetchPeriodes, submitPeriode, deletePeriode, activatePeriode } = useKklPeriodeCrud({
     editingPeriode,
     deletingPeriodeId,
     setPeriodes,
@@ -42,6 +43,25 @@ export const useKklPeriodeManagement = () => {
     setDeletingPeriodeId(id);
   };
 
+  const handleActivatePeriode = async () => {
+    const targetId =
+      selectedActivePeriodeId() ||
+      periodes().find((periode) => periode.is_active)?.id.toString() ||
+      "";
+    if (!targetId) {
+      setError("Pilih periode KKL yang akan diaktifkan.");
+      return;
+    }
+
+    const activePeriode = periodes().find((periode) => periode.is_active);
+    if (activePeriode?.id === Number(targetId)) {
+      setError("Periode KKL tersebut sudah aktif.");
+      return;
+    }
+
+    await activatePeriode(targetId);
+  };
+
   onMount(fetchPeriodes);
 
   return {
@@ -51,6 +71,8 @@ export const useKklPeriodeManagement = () => {
     editingPeriode,
     showForm,
     deletingPeriodeId,
+    selectedActivePeriodeId,
+    setSelectedActivePeriodeId,
     toast,
     clearToast,
     handleSubmit: submitPeriode,
@@ -59,6 +81,7 @@ export const useKklPeriodeManagement = () => {
     closeForm,
     requestDelete,
     handleDeleteConfirm: deletePeriode,
+    handleActivatePeriode,
     setDeletingPeriodeId,
   };
 };

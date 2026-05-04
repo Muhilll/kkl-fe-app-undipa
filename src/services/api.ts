@@ -63,11 +63,12 @@ export async function apiCall<T>(
       ...options,
     });
 
+    const json = await response.json();
+
     if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
+      throw new Error(json.message || json.error || `API Error: ${response.statusText}`);
     }
 
-    const json = await response.json();
     // Extract the actual data from response, handle both wrapped and direct responses
     const data = json.data !== undefined ? json.data : json;
     return { success: json.success, data, message: json.message };
