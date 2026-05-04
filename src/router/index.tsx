@@ -13,13 +13,13 @@ import { rolePermissionRoutes } from '../app/web-management/role-permission/rout
 import { jurusanRoutes } from '../app/master-data/jurusan/route';
 import { mahasiswaRoutes } from '../app/master-data/mahasiswa/route';
 import { dosenRoutes } from '../app/master-data/dosen/route';
-import { instansiRoutes } from '../app/master-data/instansi/route';
-import { instansiPenilaiRoutes } from '../app/master-data/instansi-penilai/route';
-import { kklPeriodeRoutes } from '../app/master-data/kkl-periode/route';
-import { kklKlpRoutes } from '../app/kkl-klp/route';
-import { kklAgtRoutes } from '../app/kkl-agt/route';
-import { laporanRoutes } from '../app/laporan/route';
-import { penilaianRoutes } from '../app/penilaian/route';
+import { instansiRoutes } from '../app/kkl-management/instansi/route';
+import { instansiPenilaiRoutes } from '../app/kkl-management/instansi-penilai/route';
+import { kklPeriodeRoutes } from '../app/kkl-management/kkl-periode/route';
+import { kklKlpRoutes } from '../app/kkl-management/kkl-klp/route';
+import { kklAgtRoutes } from '../app/kkl-management/kkl-agt/route';
+import { laporanRoutes } from '../app/kkl-management/laporan/route';
+import { penilaianRoutes } from '../app/kkl-management/penilaian/route';
 
 import Layout from '../components/layout/Index';
 import { ParentComponent } from 'solid-js';
