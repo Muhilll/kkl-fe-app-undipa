@@ -6,6 +6,7 @@ export interface KklPeriode {
   tahun: string;
   semester: Semester;
   max_agt_klp: number;
+  is_active: boolean;
   created_at?: string;
   updated_at?: string;
 }
@@ -15,6 +16,7 @@ export interface CreateKklPeriodeInput {
   tahun: string;
   semester: Semester;
   max_agt_klp: number;
+  is_active?: boolean;
 }
 
 export interface UpdateKklPeriodeInput {
@@ -22,6 +24,7 @@ export interface UpdateKklPeriodeInput {
   tahun?: string;
   semester?: Semester;
   max_agt_klp?: number;
+  is_active?: boolean;
 }
 
 export interface KklPeriodeFormData {
@@ -29,4 +32,5 @@ export interface KklPeriodeFormData {
   tahun: string;
   semester: Semester;
   max_agt_klp: number;
+  is_active: boolean;
 }

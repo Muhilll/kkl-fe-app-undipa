@@ -46,6 +46,14 @@ export const createKklPeriodeColumns = (
   { header: "Semester", cell: (p) => <span style={{ "text-transform": "capitalize" }}>{p.semester}</span> },
   { header: "Maks. Anggota/Klp", cell: (p) => <>{p.max_agt_klp}</> },
   {
+    header: "Status",
+    cell: (p) => (
+      <span class={`status-badge ${p.is_active ? "active" : "inactive"}`}>
+        {p.is_active ? "Active" : "Inactive"}
+      </span>
+    ),
+  },
+  {
     header: "Actions",
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
