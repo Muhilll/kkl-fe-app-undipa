@@ -39,7 +39,7 @@ export const useMenuCrud = (params: UseMenuCrudParams) => {
     try {
       const payload = {
         name: data.name,
-        path: data.path,
+        path: data.path || null,
         permission_path: data.permission_path || null,
         icon: data.icon || null,
         parent_id: data.parent_id ? parseInt(data.parent_id, 10) : null,

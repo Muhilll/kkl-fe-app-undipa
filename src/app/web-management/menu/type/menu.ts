@@ -1,7 +1,7 @@
 export interface Menu {
   id: number;
   name: string;
-  path: string;
+  path: string | null;
   permission_path: string | null;
   icon: string | null;
   parent_id: number | null;
@@ -11,7 +11,7 @@ export interface Menu {
 
 export interface CreateMenuInput {
   name: string;
-  path: string;
+  path?: string | null;
   permission_path?: string | null;
   icon?: string | null;
   parent_id?: number | null;
@@ -19,7 +19,7 @@ export interface CreateMenuInput {
 
 export interface UpdateMenuInput {
   name?: string;
-  path?: string;
+  path?: string | null;
   permission_path?: string | null;
   icon?: string | null;
   parent_id?: number | null;
