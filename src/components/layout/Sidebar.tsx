@@ -104,10 +104,6 @@ const Sidebar: Component<SidebarProps> = (props) => {
 
   return (
     <aside class={`agri-sidebar ${props.sidebarOpen() ? "open" : ""}`}>
-      <button class="close-btn" onClick={() => props.setSidebarOpen(false)}>
-        x
-      </button>
-
       <div class="sidebar-brand">
         <div class="sidebar-brand-icon">KKL</div>
         <div class="sidebar-brand-text">

@@ -60,7 +60,7 @@ export const createKklKlpColumns = (
 ): DataTableColumn<KklKlp>[] => [
     { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (p) => p.id },
     { header: "Nama Kelompok", cell: (p) => <>{p.nama}</>, sortValue: (p) => p.nama },
-    { header: "Periode", cell: (p) => <>{p.kkl_periode?.nama} ({p.kkl_periode?.tahun})</>, sortValue: (p) => `${p.kkl_periode?.nama || ""} ${p.kkl_periode?.tahun || ""}` },
+    { header: "Periode", cell: (p) => <>{p.kkl_periode?.semester} ({p.kkl_periode?.tahun})</>, sortValue: (p) => `${p.kkl_periode?.nama || ""} ${p.kkl_periode?.tahun || ""}` },
     { header: "Instansi", cell: (p) => <>{p.instansi?.nama}</>, sortValue: (p) => p.instansi?.nama || "" },
     { header: "Dosen Pembimbing", cell: (p) => <>{p.dosen?.nama} - {p.dosen?.nidn}</>, sortValue: (p) => `${p.dosen?.nama || ""} ${p.dosen?.nidn || ""}` },
     {
