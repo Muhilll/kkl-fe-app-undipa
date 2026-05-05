@@ -51,6 +51,7 @@ export interface RolePermissionMatrixItem {
   role_id: number;
   menu_id: number;
   menu_name: string;
+  path: string;
   can_read: boolean;
   can_create: boolean;
   can_update: boolean;

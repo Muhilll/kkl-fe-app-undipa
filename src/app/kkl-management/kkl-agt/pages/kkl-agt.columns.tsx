@@ -40,27 +40,30 @@ const IconTrash = () => (
 export const createKklAgtColumns = (
   props: Pick<KklAgtTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<KklAgt>[] => [
-    { header: "No", cell: (_, index) => <>{index + 1}</> },
+    { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (p) => p.id },
     {
       header: "Mahasiswa", cell: (p) => <div style={{ display: "flex", "flex-direction": "column", gap: "2px" }}>
         <span style={{ "font-weight": "500" }}>{p.mahasiswa?.nama || "-"}</span>
         <span style={{ "font-size": "12px", color: "var(--gray-500)" }}>
           NIM: {p.mahasiswa?.nim || "-"}
         </span>
-      </div>
+      </div>,
+      sortValue: (p) => `${p.mahasiswa?.nama || ""} ${p.mahasiswa?.nim || ""}`
     },
-    { header: "Periode KKL", cell: (p) => <>{p.kkl_klp?.kkl_periode?.semester} - {p.kkl_klp?.kkl_periode?.tahun}</> },
-    { header: "Instansi Tujuan", cell: (p) => <>{p.kkl_klp?.instansi?.nama}</> },
+    { header: "Periode KKL", cell: (p) => <>{p.kkl_klp?.kkl_periode?.semester} - {p.kkl_klp?.kkl_periode?.tahun}</>, sortValue: (p) => `${p.kkl_klp?.kkl_periode?.semester || ""} ${p.kkl_klp?.kkl_periode?.tahun || ""}` },
+    { header: "Instansi Tujuan", cell: (p) => <>{p.kkl_klp?.instansi?.nama}</>, sortValue: (p) => p.kkl_klp?.instansi?.nama || "" },
     {
       header: "Dosen Pembimbing", cell: (p) => <div style={{ display: "flex", "flex-direction": "column", gap: "2px" }}>
         <span style={{ "font-weight": "500" }}>{p.kkl_klp?.dosen?.nama || "-"}</span>
         <span style={{ "font-size": "12px", color: "var(--gray-500)" }}>
           NIP: {p.kkl_klp?.dosen?.nidn || "-"}
         </span>
-      </div>
+      </div>,
+      sortValue: (p) => `${p.kkl_klp?.dosen?.nama || ""} ${p.kkl_klp?.dosen?.nidn || ""}`
     },
     {
       header: "Actions",
+      sortable: false,
       headerStyle: { "text-align": "right" },
       cellClass: "td-actions",
       cell: (p) => (

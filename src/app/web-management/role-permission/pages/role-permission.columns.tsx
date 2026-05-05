@@ -34,15 +34,17 @@ export const createRolePermissionColumns = (
     "onManagePermissions" | "rolePermissions" | "canUpdate"
   >,
 ): DataTableColumn<Role>[] => [
-  { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "Role Name", cell: (role) => <>{role.name}</> },
-  { header: "Role Code", cell: (role) => <>{role.code}</> },
+  { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (role) => role.id },
+  { header: "Role Name", cell: (role) => <>{role.name}</>, sortValue: (role) => role.name },
+  { header: "Role Code", cell: (role) => <>{role.code}</>, sortValue: (role) => role.code },
   {
     header: "Menus Configured",
     cell: (role) => <>{countConfiguredMenus(role.id, props.rolePermissions)}</>,
+    sortValue: (role) => countConfiguredMenus(role.id, props.rolePermissions),
   },
   {
     header: "Actions",
+    sortable: false,
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
     cell: (role) => (

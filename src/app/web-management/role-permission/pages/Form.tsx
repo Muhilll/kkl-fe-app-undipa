@@ -18,9 +18,9 @@ const RolePermissionForm: Component<RolePermissionFormProps> = (props) => {
       current.map((item) =>
         item.menu_id === menuId
           ? {
-              ...item,
-              [field]: checked,
-            }
+            ...item,
+            [field]: checked,
+          }
           : item,
       ),
     );
@@ -48,6 +48,7 @@ const RolePermissionForm: Component<RolePermissionFormProps> = (props) => {
             <thead>
               <tr>
                 <th>Menu</th>
+                <th>Path</th>
                 <th>Can Read</th>
                 <th>Can Create</th>
                 <th>Can Update</th>
@@ -60,6 +61,7 @@ const RolePermissionForm: Component<RolePermissionFormProps> = (props) => {
                 {(item) => (
                   <tr>
                     <td>{item.menu_name}</td>
+                    <td>{item.path}</td>
                     <td>
                       <input
                         type="checkbox"

@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useJurusanManagement } from "../hook/useJurusanManagement";
 import JurusanForm from "./Form";
 import JurusanTable from "./Table";
@@ -25,6 +26,23 @@ const IconPlusCircle = () => (
   </svg>
 );
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const JurusanPage: Component = () => {
   const jurusanManagement = useJurusanManagement();
   const permissions = usePagePermissions();
@@ -36,12 +54,27 @@ const JurusanPage: Component = () => {
       <PageHeader
         title="Jurusan Management"
         description="Manage jurusan codes and names used across the system."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={jurusanManagement.openCreateForm}>
-            <IconPlusCircle />
-            Add New Jurusan
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => printTableToPdf({
+                title: "Data Jurusan",
+                subtitle: "Daftar jurusan yang terdaftar dalam sistem.",
+                headers: ["No", "Kode", "Nama"],
+                rows: jurusanManagement.jurusans().map((j, i) => [String(i + 1), j.kode, j.nama]),
+              })}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={jurusanManagement.openCreateForm}>
+                <IconPlusCircle />
+                Add New Jurusan
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={jurusanManagement.error()}>

@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useInstansiPenilaiManagement } from "../hook/useInstansiPenilaiManagement";
 import InstansiPenilaiForm from "./Form";
 import InstansiPenilaiTable from "./Table";
@@ -13,6 +14,23 @@ const IconPlusCircle = () => (
     <circle cx="12" cy="12" r="10" />
     <line x1="12" y1="8" x2="12" y2="16" />
     <line x1="8" y1="12" x2="16" y2="12" />
+  </svg>
+);
+
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
   </svg>
 );
 
@@ -27,12 +45,33 @@ const InstansiPenilaiPage: Component = () => {
       <PageHeader
         title="Instansi Penilai Management"
         description="Kelola akun penilai dari instansi tempat KKL (Virtual Account otomatis membuat akun)."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={management.openCreateForm}>
-            <IconPlusCircle />
-            Buat Akun Penilai
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => {
+                const klps = management.klps();
+                printTableToPdf({
+                  title: "Data Instansi Penilai",
+                  subtitle: "Daftar akun penilai dari instansi tempat KKL.",
+                  headers: ["No", "Virtual Account", "Nama", "Jabatan", "Kelompok KKL"],
+                  rows: management.instansiPenilais().map((p, i) => {
+                    const klp = klps.find(k => k.id === p.kkl_klp_id);
+                    return [String(i + 1), p.virtual_account, p.nama, p.jabatan, klp?.nama || "-"];
+                  }),
+                });
+              }}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={management.openCreateForm}>
+                <IconPlusCircle />
+                Buat Akun Penilai
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={management.error()}>

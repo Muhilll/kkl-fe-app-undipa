@@ -40,14 +40,19 @@ const IconTrash = () => (
 export const createMahasiswaColumns = (
   props: Pick<MahasiswaTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<Mahasiswa>[] => [
-  { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "NIM", cell: (m) => <>{m.nim}</> },
-  { header: "Nama", cell: (m) => <>{m.nama}</> },
-  { header: "Email", cell: (m) => <>{m.email}</> },
-  { header: "Telp", cell: (m) => <>{m.telp}</> },
-  { header: "Jurusan", cell: (m) => <>{m.jurusan?.nama || m.jurusan_id}</> },
+  { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (m) => m.id },
+  { header: "NIM", cell: (m) => <>{m.nim}</>, sortValue: (m) => m.nim },
+  { header: "Nama", cell: (m) => <>{m.nama}</>, sortValue: (m) => m.nama },
+  { header: "Email", cell: (m) => <>{m.email}</>, sortValue: (m) => m.email },
+  { header: "Telp", cell: (m) => <>{m.telp}</>, sortValue: (m) => m.telp },
+  {
+    header: "Jurusan",
+    cell: (m) => <>{m.jurusan?.nama || m.jurusan_id}</>,
+    sortValue: (m) => m.jurusan?.nama || m.jurusan_id,
+  },
   {
     header: "Actions",
+    sortable: false,
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
     cell: (m) => (

@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useKklKlpManagement } from "../hook/useKklKlpManagement";
 import KklKlpForm from "./Form";
 import KklKlpTable from "./Table";
@@ -25,6 +26,23 @@ const IconPlusCircle = () => (
   </svg>
 );
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const KklKlpPage: Component = () => {
   const klpManagement = useKklKlpManagement();
   const permissions = usePagePermissions();
@@ -36,12 +54,27 @@ const KklKlpPage: Component = () => {
       <PageHeader
         title="Kelompok KKL Management"
         description="Manage kelompok pembagian mahasiswa berdasarkan periode, instansi, dan dosen."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={klpManagement.openCreateForm}>
-            <IconPlusCircle />
-            Add New Kelompok
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => printTableToPdf({
+                title: "Data Kelompok KKL",
+                subtitle: "Daftar kelompok pembagian mahasiswa KKL.",
+                headers: ["No", "Nama Kelompok", "Periode", "Instansi", "Dosen Pembimbing"],
+                rows: klpManagement.klps().map((p, i) => [String(i + 1), p.nama, `${p.kkl_periode?.nama || "-"} (${p.kkl_periode?.tahun || "-"})`, p.instansi?.nama || "-", `${p.dosen?.nama || "-"} - ${p.dosen?.nidn || "-"}`]),
+              })}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={klpManagement.openCreateForm}>
+                <IconPlusCircle />
+                Add New Kelompok
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={klpManagement.error()}>

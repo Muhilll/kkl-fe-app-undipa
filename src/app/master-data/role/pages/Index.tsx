@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useRoleManagement } from "../hook/useRoleManagement";
 import RoleForm from "./Form";
 import RoleTable from "./Table";
@@ -25,6 +26,23 @@ const IconPlusCircle = () => (
   </svg>
 );
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const RolePage: Component = () => {
   const roleManagement = useRoleManagement();
   const permissions = usePagePermissions();
@@ -36,12 +54,27 @@ const RolePage: Component = () => {
       <PageHeader
         title="Role Management"
         description="Manage role codes and names used across the system."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={roleManagement.openCreateForm}>
-            <IconPlusCircle />
-            Add New Role
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => printTableToPdf({
+                title: "Data Role",
+                subtitle: "Daftar role yang terdaftar dalam sistem.",
+                headers: ["No", "Code", "Name"],
+                rows: roleManagement.roles().map((r, i) => [String(i + 1), r.code, r.name]),
+              })}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={roleManagement.openCreateForm}>
+                <IconPlusCircle />
+                Add New Role
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={roleManagement.error()}>

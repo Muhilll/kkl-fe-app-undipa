@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useLaporanManagement } from "../hook/useLaporanManagement";
 import LaporanForm from "./Form";
 import LaporanTable from "./Table";
@@ -13,6 +14,23 @@ const IconPlusCircle = () => (
     <circle cx="12" cy="12" r="10" />
     <line x1="12" y1="8" x2="12" y2="16" />
     <line x1="8" y1="12" x2="16" y2="12" />
+  </svg>
+);
+
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
   </svg>
 );
 
@@ -27,12 +45,27 @@ const LaporanPage: Component = () => {
       <PageHeader
         title="Laporan KKL Management"
         description="Manage laporan kegiatan KKL mahasiswa."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={laporanManagement.openCreateForm}>
-            <IconPlusCircle />
-            Add New Laporan
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => printTableToPdf({
+                title: "Data Laporan KKL",
+                subtitle: "Daftar laporan kegiatan KKL mahasiswa.",
+                headers: ["No", "Mahasiswa", "NIM", "Tanggal", "Jam", "Aktifitas", "Jarak", "Status"],
+                rows: laporanManagement.laporans().map((p, i) => [String(i + 1), p.mahasiswa?.nama || "-", p.mahasiswa?.nim || "-", p.tanggal, p.jam, p.aktifitas, p.jarak ? `${p.jarak} m` : "-", p.status]),
+              })}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={laporanManagement.openCreateForm}>
+                <IconPlusCircle />
+                Add New Laporan
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={laporanManagement.error()}>

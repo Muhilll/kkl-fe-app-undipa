@@ -45,16 +45,17 @@ export const createMenuColumns = (
   };
 
   return [
-    { header: "No", cell: (_, index) => <>{index + 1}</> },
-    { header: "Name", cell: (menu) => <>{menu.name}</> },
-    { header: "Path", cell: (menu) => <>{menu.path || "-"}</> },
-    { header: "Permission Path", cell: (menu) => <>{menu.permission_path || "-"}</> },
-    { header: "Icon", cell: (menu) => <>{menu.icon || "-"}</> },
-    { header: "Parent", cell: (menu) => <>{getParentLabel(menu)}</> },
-    { header: "Created At", cell: (menu) => <>{formatDate(menu.created_at)}</> },
-    { header: "Updated At", cell: (menu) => <>{formatDate(menu.updated_at)}</> },
+    { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (menu) => menu.id },
+    { header: "Name", cell: (menu) => <>{menu.name}</>, sortValue: (menu) => menu.name },
+    { header: "Path", cell: (menu) => <>{menu.path || "-"}</>, sortValue: (menu) => menu.path || "" },
+    { header: "Permission Path", cell: (menu) => <>{menu.permission_path || "-"}</>, sortValue: (menu) => menu.permission_path || "" },
+    { header: "Icon", cell: (menu) => <>{menu.icon || "-"}</>, sortValue: (menu) => menu.icon || "" },
+    { header: "Parent", cell: (menu) => <>{getParentLabel(menu)}</>, sortValue: (menu) => getParentLabel(menu) },
+    { header: "Created At", cell: (menu) => <>{formatDate(menu.created_at)}</>, sortValue: (menu) => menu.created_at || "" },
+    { header: "Updated At", cell: (menu) => <>{formatDate(menu.updated_at)}</>, sortValue: (menu) => menu.updated_at || "" },
     {
       header: "Actions",
+      sortable: false,
       headerStyle: { "text-align": "right" },
       cellClass: "td-actions",
       cell: (menu) => (

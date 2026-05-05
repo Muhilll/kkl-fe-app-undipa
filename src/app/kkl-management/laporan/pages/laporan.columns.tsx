@@ -28,20 +28,22 @@ const IconTrash = () => (
 export const createLaporanColumns = (
   props: Pick<LaporanTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<Laporan>[] => [
-    { header: "No", cell: (_, index) => <>{index + 1}</> },
+    { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (p) => p.id },
     {
       header: "Mahasiswa", cell: (p) => <div style={{ display: "flex", "flex-direction": "column", gap: "2px" }}>
         <span style={{ "font-weight": "500" }}>{p.mahasiswa?.nama || "-"}</span>
         <span style={{ "font-size": "12px", color: "var(--gray-500)" }}>
           NIM: {p.mahasiswa?.nim || "-"}
         </span>
-      </div>
+      </div>,
+      sortValue: (p) => `${p.mahasiswa?.nama || ""} ${p.mahasiswa?.nim || ""}`
     },
-    { header: "Tanggal", cell: (p) => <>{p.tanggal}</> },
-    { header: "Jam", cell: (p) => <>{p.jam}</> },
-    { header: "Aktifitas", cell: (p) => <>{p.aktifitas.length > 50 ? p.aktifitas.substring(0, 50) + "..." : p.aktifitas}</> },
+    { header: "Tanggal", cell: (p) => <>{p.tanggal}</>, sortValue: (p) => p.tanggal },
+    { header: "Jam", cell: (p) => <>{p.jam}</>, sortValue: (p) => p.jam },
+    { header: "Aktifitas", cell: (p) => <>{p.aktifitas.length > 50 ? p.aktifitas.substring(0, 50) + "..." : p.aktifitas}</>, sortValue: (p) => p.aktifitas },
     {
       header: "File",
+      sortable: false,
       cell: (p) => (
         <>
           {p.file ? (
@@ -54,17 +56,18 @@ export const createLaporanColumns = (
         </>
       ),
     },
-    { header: "Jarak", cell: (p) => <>{p.jarak ? `${p.jarak} m` : "-"}</> },
+    { header: "Jarak", cell: (p) => <>{p.jarak ? `${p.jarak} m` : "-"}</>, sortValue: (p) => p.jarak || 0 },
     {
       header: "Status",
+      sortValue: (p) => p.status,
       cell: (p) => (
         <span style={{
           padding: "4px 10px",
           "border-radius": "12px",
           "font-size": "12px",
           "font-weight": "600",
-          "background-color": p.status === "valid" ? "var(--green-100, #dcfce7)" : "var(--red-100, #fee2e2)",
-          color: p.status === "valid" ? "var(--green-700, #15803d)" : "var(--red-700, #b91c1c)",
+          "background-color": p.status === "valid" ? "var(--brand-100, #dcfce7)" : "var(--red-100, #fee2e2)",
+          color: p.status === "valid" ? "var(--brand-700, #15803d)" : "var(--red-700, #b91c1c)",
         }}>
           {p.status}
         </span>
@@ -72,6 +75,7 @@ export const createLaporanColumns = (
     },
     {
       header: "Actions",
+      sortable: false,
       headerStyle: { "text-align": "right" },
       cellClass: "td-actions",
       cell: (p) => (

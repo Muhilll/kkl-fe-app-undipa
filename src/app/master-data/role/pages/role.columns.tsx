@@ -55,13 +55,22 @@ const formatDate = (value?: string) => {
 export const createRoleColumns = (
   props: Pick<RoleTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<Role>[] => [
-  { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "Code", cell: (role) => <>{role.code}</> },
-  { header: "Name", cell: (role) => <>{role.name}</> },
-  { header: "Created At", cell: (role) => <>{formatDate(role.created_at)}</> },
-  { header: "Updated At", cell: (role) => <>{formatDate(role.updated_at)}</> },
+  { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (role) => role.id },
+  { header: "Code", cell: (role) => <>{role.code}</>, sortValue: (role) => role.code },
+  { header: "Name", cell: (role) => <>{role.name}</>, sortValue: (role) => role.name },
+  {
+    header: "Created At",
+    cell: (role) => <>{formatDate(role.created_at)}</>,
+    sortValue: (role) => role.created_at || "",
+  },
+  {
+    header: "Updated At",
+    cell: (role) => <>{formatDate(role.updated_at)}</>,
+    sortValue: (role) => role.updated_at || "",
+  },
   {
     header: "Actions",
+    sortable: false,
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
     cell: (role) => (

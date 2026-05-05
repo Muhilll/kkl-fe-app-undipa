@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useUserManagement } from "../hook/useUserManagement";
 import UserTable from "./Table";
 import UserForm from "./Form";
@@ -25,6 +26,23 @@ const IconPlusCircle = () => (
   </svg>
 );
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const UserPage: Component = () => {
   const userManagement = useUserManagement();
   const permissions = usePagePermissions();
@@ -36,12 +54,27 @@ const UserPage: Component = () => {
       <PageHeader
         title="User Management"
         description="Managing the strategic distribution of users across the system."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={userManagement.openCreateForm}>
-            <IconPlusCircle />
-            Add New User
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => printTableToPdf({
+                title: "Data User",
+                subtitle: "Daftar user yang terdaftar dalam sistem.",
+                headers: ["No", "Username", "Role", "Status"],
+                rows: userManagement.users().map((u, i) => [String(i + 1), u.username, u.role?.name || String(u.role_id), u.is_active ? "Active" : "Inactive"]),
+              })}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={userManagement.openCreateForm}>
+                <IconPlusCircle />
+                Add New User
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={userManagement.error()}>

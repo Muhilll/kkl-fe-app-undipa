@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useKklAgtManagement } from "../hook/useKklAgtManagement";
 import KklAgtForm from "./Form";
 import KklAgtTable from "./Table";
@@ -25,6 +26,23 @@ const IconPlusCircle = () => (
   </svg>
 );
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const KklAgtPage: Component = () => {
   const agtManagement = useKklAgtManagement();
   const permissions = usePagePermissions();
@@ -36,12 +54,27 @@ const KklAgtPage: Component = () => {
       <PageHeader
         title="Anggota KKL Management"
         description="Manage pendaftaran mahasiswa ke dalam kelompok KKL."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={agtManagement.openCreateForm}>
-            <IconPlusCircle />
-            Add New Anggota
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => printTableToPdf({
+                title: "Data Anggota KKL",
+                subtitle: "Daftar mahasiswa anggota kelompok KKL.",
+                headers: ["No", "Nama Mahasiswa", "NIM", "Periode KKL", "Instansi Tujuan", "Dosen Pembimbing"],
+                rows: agtManagement.agts().map((p, i) => [String(i + 1), p.mahasiswa?.nama || "-", p.mahasiswa?.nim || "-", `${p.kkl_klp?.kkl_periode?.semester || "-"} - ${p.kkl_klp?.kkl_periode?.tahun || "-"}`, p.kkl_klp?.instansi?.nama || "-", p.kkl_klp?.dosen?.nama || "-"]),
+              })}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={agtManagement.openCreateForm}>
+                <IconPlusCircle />
+                Add New Anggota
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={agtManagement.error()}>

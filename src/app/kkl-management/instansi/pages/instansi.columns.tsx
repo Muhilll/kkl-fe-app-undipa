@@ -47,13 +47,14 @@ const IconTrash = () => (
 export const createInstansiColumns = (
   props: Pick<InstansiTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete" | "onManagePenilai">,
 ): DataTableColumn<Instansi>[] => [
-  { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "Kode", cell: (i) => <>{i.kode}</> },
-  { header: "Nama Instansi", cell: (i) => <>{i.nama}</> },
-  { header: "Alamat", cell: (i) => <>{i.alamat}</> },
-  { header: "Telp", cell: (i) => <>{i.telp || "-"}</> },
+  { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (i) => i.id },
+  { header: "Kode", cell: (i) => <>{i.kode}</>, sortValue: (i) => i.kode },
+  { header: "Nama Instansi", cell: (i) => <>{i.nama}</>, sortValue: (i) => i.nama },
+  { header: "Alamat", cell: (i) => <>{i.alamat}</>, sortValue: (i) => i.alamat },
+  { header: "Telp", cell: (i) => <>{i.telp || "-"}</>, sortValue: (i) => i.telp || "" },
   {
     header: "Actions",
+    sortable: false,
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
     cell: (i) => (

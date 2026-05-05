@@ -7,6 +7,8 @@ import type { KklKlp } from "../../kkl-klp/type/kkl-klp";
 export interface PenilaianFormProps {
   initialData?: Penilaian;
   defaultKklAgtId?: number;
+  defaultInstansiPenilaiId?: number;
+  readOnly?: boolean;
   onSubmit: (data: any) => void;
   isLoading: boolean;
   agts: KklAgt[];

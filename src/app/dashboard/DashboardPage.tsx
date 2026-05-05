@@ -3,78 +3,228 @@
  * Main dashboard for the application
  */
 
-import { Component } from "solid-js";
-import { useNavigate } from "@solidjs/router";
+import { Component, createMemo, createSignal, onMount } from "solid-js";
 import { useAuth } from "../../services/authStore";
 import PageHeader from "../../components/ui/PageHeader";
-import Toast from "../../components/ui/Toast";
+import { kklPeriodeAPI } from "../kkl-management/kkl-periode/service/kkl-periode.api";
+import { kklKlpAPI } from "../kkl-management/kkl-klp/service/kkl-klp.api";
+import { kklAgtAPI } from "../kkl-management/kkl-agt/service/kkl-agt.api";
+import type { KklPeriode } from "../kkl-management/kkl-periode/type/kkl-periode";
+import type { KklKlp } from "../kkl-management/kkl-klp/type/kkl-klp";
+import type { KklAgt } from "../kkl-management/kkl-agt/type/kkl-agt";
 
 const DashboardPage: Component = () => {
-  const navigate = useNavigate();
   const auth = useAuth();
+  const [periodes, setPeriodes] = createSignal<KklPeriode[]>([]);
+  const [klps, setKlps] = createSignal<KklKlp[]>([]);
+  const [agts, setAgts] = createSignal<KklAgt[]>([]);
+  const [isLoading, setIsLoading] = createSignal(true);
+  const [error, setError] = createSignal("");
 
-  const handleLogout = () => {
-    auth.logout();
-    navigate("/login");
+  const fetchStats = async () => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const [periodeRes, klpRes, agtRes] = await Promise.all([
+        kklPeriodeAPI.getAll(),
+        kklKlpAPI.getAll(),
+        kklAgtAPI.getAll(),
+      ]);
+
+      if (periodeRes.success && periodeRes.data) setPeriodes(periodeRes.data);
+      if (klpRes.success && klpRes.data) setKlps(klpRes.data);
+      if (agtRes.success && agtRes.data) setAgts(agtRes.data);
+
+      const failedMessage =
+        periodeRes.error || klpRes.error || agtRes.error || "";
+      if (!periodeRes.success || !klpRes.success || !agtRes.success) {
+        setError(failedMessage || "Gagal memuat statistik dashboard.");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Gagal memuat statistik dashboard.");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  onMount(fetchStats);
+
+  const activePeriode = createMemo(
+    () => periodes().find((periode) => periode.is_active) || null,
+  );
+
+  const activeKlps = createMemo(() => {
+    const periode = activePeriode();
+    if (!periode) return [];
+    return klps().filter((klp) => Number(klp.kkl_periode_id) === Number(periode.id));
+  });
+
+  const activeAgtCount = createMemo(() => {
+    const activeKlpIds = new Set(activeKlps().map((klp) => Number(klp.id)));
+    return agts().filter((agt) => activeKlpIds.has(Number(agt.kkl_klp_id))).length;
+  });
+
+  const activeInstansiCount = createMemo(() => {
+    const instansiIds = new Set(activeKlps().map((klp) => Number(klp.instansi_id)));
+    return instansiIds.size;
+  });
+
+  const stats = createMemo(() => [
+    {
+      label: "Periode Aktif",
+      value: activePeriode()
+        ? `${activePeriode()!.tahun} ${activePeriode()!.semester}`
+        : "-",
+      meta: activePeriode()?.nama || "Belum ada periode aktif",
+    },
+    {
+      label: "Kelompok KKL",
+      value: activeKlps().length,
+      meta: "Kelompok pada periode aktif",
+    },
+    {
+      label: "Mahasiswa KKL",
+      value: activeAgtCount(),
+      meta: "Mahasiswa tergabung dalam kelompok",
+    },
+    {
+      label: "Instansi KKL",
+      value: activeInstansiCount(),
+      meta: "Instansi unik pada periode aktif",
+    },
+  ]);
 
   return (
     <div class="user-page">
-      <PageHeader title="Dashboard" description="Welcome to your dashboard!" />
+      <PageHeader
+        title="Dashboard"
+        description={`Selamat datang, ${auth.user()?.username || "User"}. Ringkasan KKL periode aktif.`}
+      />
 
-      <div class="user-info">
-        <h2>Welcome, {auth.user()?.username}!</h2>
+      <div class="dashboard-active-period">
+        <div>
+          <span class="dashboard-eyebrow">Periode KKL Aktif</span>
+          <h2>{activePeriode()?.nama || "Belum ada periode aktif"}</h2>
+          <p>
+            {activePeriode()
+              ? `${activePeriode()!.tahun} - ${activePeriode()!.semester}`
+              : "Aktifkan satu periode KKL untuk menampilkan statistik berjalan."}
+          </p>
+        </div>
+        <button
+          type="button"
+          class="btn-secondary"
+          onClick={fetchStats}
+          disabled={isLoading()}
+        >
+          {isLoading() ? "Memuat..." : "Refresh"}
+        </button>
+      </div>
+
+      {error() && <div class="error-message">{error()}</div>}
+
+      <div class="dashboard-stat-grid">
+        {stats().map((item) => (
+          <div class="dashboard-stat-card">
+            <span>{item.label}</span>
+            <strong>{item.value}</strong>
+            <p>{item.meta}</p>
+          </div>
+        ))}
       </div>
 
       <style>{`
-        .dashboard-page {
-          padding: 2rem;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-
-        .dashboard-header {
+        .dashboard-active-period {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          margin-bottom: 2rem;
+          justify-content: space-between;
+          gap: 18px;
+          padding: 22px 24px;
+          margin-bottom: 22px;
+          background: #fff;
+          border: 1px solid var(--gray-200);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow-sm);
         }
 
-        .dashboard-header h1 {
+        .dashboard-eyebrow {
+          color: var(--gray-500);
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .dashboard-active-period h2 {
           margin: 0;
-          color: #333;
+          color: var(--gray-900);
+          font-size: 22px;
+          line-height: 1.35;
         }
 
-        .logout-btn {
-          padding: 0.5rem 1rem;
-          background: #e74c3c;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-weight: 600;
-          transition: background 0.3s;
+        .dashboard-active-period p {
+          margin: 4px 0 0;
+          color: var(--gray-500);
+          font-size: 14px;
         }
 
-        .logout-btn:hover {
-          background: #c0392b;
+        .dashboard-stat-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 16px;
         }
 
-        .user-info {
-          background: #f5f5f5;
-          padding: 1.5rem;
-          border-radius: 8px;
-          border-left: 4px solid #667eea;
+        .dashboard-stat-card {
+          min-height: 148px;
+          padding: 18px;
+          background: #fff;
+          border: 1px solid var(--gray-200);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow-sm);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 12px;
         }
 
-        .user-info h2 {
-          margin-top: 0;
-          color: #333;
+        .dashboard-stat-card span {
+          color: var(--gray-500);
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.07em;
+          text-transform: uppercase;
         }
 
-        .user-info p {
-          margin: 0.5rem 0;
-          color: #666;
+        .dashboard-stat-card strong {
+          color: var(--brand-800);
+          font-size: 34px;
+          line-height: 1;
+          font-weight: 800;
+        }
+
+        .dashboard-stat-card p {
+          margin: 0;
+          color: var(--gray-500);
+          font-size: 13px;
+          line-height: 1.45;
+        }
+
+        @media (max-width: 960px) {
+          .dashboard-stat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 640px) {
+          .dashboard-active-period {
+            align-items: stretch;
+            flex-direction: column;
+          }
+
+          .dashboard-stat-grid {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </div>

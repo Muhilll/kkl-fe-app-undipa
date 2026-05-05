@@ -20,6 +20,11 @@ import { kklKlpRoutes } from '../app/kkl-management/kkl-klp/route';
 import { kklAgtRoutes } from '../app/kkl-management/kkl-agt/route';
 import { laporanRoutes } from '../app/kkl-management/laporan/route';
 import { penilaianRoutes } from '../app/kkl-management/penilaian/route';
+import { dosenAreaRoutes } from '../app/dosen/route';
+import { pembimbingLapanganRoutes } from '../app/pembimbing-lapangan/route';
+import { mahasiswaLaporanRoutes } from '../app/mahasiswa/laporan/route';
+import { mahasiswaPenilaianRoutes } from '../app/mahasiswa/penilaian/route';
+import { publicInstansiRoutes } from '../app/instansi/route';
 
 import Layout from '../components/layout/Index';
 import { ParentComponent } from 'solid-js';
@@ -60,6 +65,11 @@ export const routeConfig = (
       {kklAgtRoutes}
       {laporanRoutes}
       {penilaianRoutes}
+      {dosenAreaRoutes}
+      {pembimbingLapanganRoutes}
+      {mahasiswaLaporanRoutes}
+      {mahasiswaPenilaianRoutes}
+      {publicInstansiRoutes}
     </Route>
   </>
 );

@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useKklPeriodeManagement } from "../hook/useKklPeriodeManagement";
 import KklPeriodeForm from "./Form";
 import KklPeriodeTable from "./Table";
@@ -25,6 +26,23 @@ const IconPlusCircle = () => (
   </svg>
 );
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const KklPeriodePage: Component = () => {
   const periodeManagement = useKklPeriodeManagement();
   const permissions = usePagePermissions();
@@ -39,12 +57,27 @@ const KklPeriodePage: Component = () => {
       <PageHeader
         title="Periode KKL Management"
         description="Manage periodes, years, and group limits for KKL."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={periodeManagement.openCreateForm}>
-            <IconPlusCircle />
-            Add New Periode
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => printTableToPdf({
+                title: "Data Periode KKL",
+                subtitle: "Daftar periode pelaksanaan KKL.",
+                headers: ["No", "Nama Periode", "Tahun", "Semester", "Maks. Anggota/Klp", "Status"],
+                rows: periodeManagement.periodes().map((p, i) => [String(i + 1), p.nama, String(p.tahun), p.semester, String(p.max_agt_klp), p.is_active ? "Active" : "Inactive"]),
+              })}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={periodeManagement.openCreateForm}>
+                <IconPlusCircle />
+                Add New Periode
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={periodeManagement.error()}>

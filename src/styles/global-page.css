@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --green-900: #14532d;
-  --green-800: #166534;
-  --green-700: #15803d;
-  --green-600: #16a34a;
-  --green-500: #22c55e;
-  --green-200: #bbf7d0;
-  --green-100: #dcfce7;
-  --green-50: #f0fdf4;
+  --brand-900: #7f1d1d;
+  --brand-800: #b91c1c;
+  --brand-700: #dc2626;
+  --brand-600: #ef4444;
+  --brand-500: #f87171;
+  --brand-200: #fde68a;
+  --brand-100: #fef3c7;
+  --brand-50: #fffbeb;
   --gray-900: #111827;
   --gray-800: #1f2937;
   --gray-700: #374151;
@@ -16,7 +16,7 @@
   --gray-400: #9ca3af;
   --gray-300: #d1d5db;
   --gray-200: #e5e7eb;
-  --gray-50: #f9fafb;
+  --gray-50: #fdfbf7;
   --red-600: #dc2626;
   --red-100: #fee2e2;
   --font: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -43,8 +43,8 @@ body {
   min-height: 100vh;
   padding: 24px;
   background:
-    radial-gradient(circle at top left, rgba(34, 197, 94, 0.1), transparent 28%),
-    linear-gradient(180deg, #eef4ef 0%, #f8faf8 100%);
+    radial-gradient(circle at top left, rgba(239, 68, 68, 0.1), transparent 28%),
+    linear-gradient(180deg, #fef3c7 0%, #fffbeb 100%);
 }
 
 .auth-shell {
@@ -58,10 +58,10 @@ body {
   width: min(100%, 520px);
   padding: 44px 42px 38px;
   background: #fff;
-  border: 1px solid #dbe6dd;
+  border: 1px solid var(--gray-200);
   border-radius: 28px;
   box-shadow:
-    0 18px 40px rgba(20, 83, 45, 0.09),
+    0 18px 40px rgba(127, 29, 29, 0.09),
     0 2px 10px rgba(17, 24, 39, 0.05);
 }
 
@@ -69,7 +69,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  color: var(--green-800);
+  color: var(--brand-800);
   font-size: 18px;
   font-weight: 800;
 }
@@ -81,9 +81,9 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: var(--green-800);
+  background: var(--brand-800);
   color: #fefce8;
-  box-shadow: 0 8px 18px rgba(22, 101, 52, 0.22);
+  box-shadow: 0 8px 18px rgba(185, 28, 28, 0.22);
 }
 
 .auth-brand-mark svg {
@@ -133,7 +133,7 @@ body {
 .auth-link-btn {
   border: none;
   background: transparent;
-  color: var(--green-800);
+  color: var(--brand-800);
   font-family: var(--font);
   font-size: 11px;
   font-weight: 700;
@@ -176,8 +176,8 @@ body {
   height: 56px;
   padding: 0 64px 0 54px;
   border-radius: 12px;
-  border-color: #dfe6df;
-  background: #f8faf8;
+  border-color: var(--gray-300);
+  background: var(--gray-50);
   font-size: 15px;
   line-height: 1;
 }
@@ -194,7 +194,7 @@ body {
   justify-content: center;
   border: none;
   background: transparent;
-  color: var(--green-800);
+  color: var(--brand-800);
   cursor: pointer;
   padding: 0;
 }
@@ -205,7 +205,7 @@ body {
 }
 
 .auth-password-toggle:hover {
-  color: var(--green-900);
+  color: var(--brand-900);
 }
 
 .auth-form .auth-input-wrap input::placeholder {
@@ -213,8 +213,8 @@ body {
 }
 
 .auth-form .auth-input-wrap input:focus {
-  border-color: var(--green-600);
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
 }
 
 .auth-submit-btn {
@@ -223,7 +223,7 @@ body {
   padding: 13px 18px;
   border: none;
   border-radius: 12px;
-  background: var(--green-800);
+  background: var(--brand-800);
   color: #fff;
   font-family: var(--font);
   font-size: 14px;
@@ -231,12 +231,12 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 10px 18px rgba(22, 101, 52, 0.2);
+  box-shadow: 0 10px 18px rgba(185, 28, 28, 0.2);
   transition: background 0.15s, transform 0.15s;
 }
 
 .auth-submit-btn:hover:not(:disabled) {
-  background: var(--green-900);
+  background: var(--brand-900);
   transform: translateY(-1px);
 }
 
@@ -279,7 +279,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 11px 22px;
-  background: var(--green-800);
+  background: var(--brand-800);
   color: #fff;
   border: none;
   border-radius: var(--radius);
@@ -289,11 +289,11 @@ body {
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.18s, transform 0.12s;
-  box-shadow: 0 2px 8px rgba(22, 101, 52, 0.25);
+  box-shadow: 0 2px 8px rgba(185, 28, 28, 0.25);
 }
 
 .btn-create:hover {
-  background: var(--green-900);
+  background: var(--brand-900);
   transform: translateY(-1px);
 }
 
@@ -421,6 +421,7 @@ body {
 
 .form-group input,
 .form-group select,
+.form-select,
 .form-textarea {
   height: 40px;
   padding: 0 12px;
@@ -444,13 +445,15 @@ body {
 
 .form-group input:focus,
 .form-group select:focus,
+.form-select:focus,
 .form-textarea:focus {
-  border-color: var(--green-600);
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
 }
 
 .form-group input:disabled,
 .form-group select:disabled,
+.form-select:disabled,
 .form-textarea:disabled {
   background: var(--gray-50);
   color: var(--gray-400);
@@ -488,8 +491,8 @@ body {
 }
 
 .file-input-field:focus-within {
-  border-color: var(--green-600);
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
 }
 
 .file-input-button {
@@ -499,7 +502,7 @@ body {
   min-height: 32px;
   padding: 0 14px;
   border-radius: 8px;
-  background: var(--green-800);
+  background: var(--brand-800);
   color: #fff !important;
   font-size: 12px;
   font-weight: 700;
@@ -508,7 +511,7 @@ body {
 }
 
 .file-input-button:hover {
-  background: var(--green-900);
+  background: var(--brand-900);
 }
 
 .file-input-button.is-disabled {
@@ -536,7 +539,7 @@ body {
   grid-column: 1 / -1;
   justify-self: start;
   padding: 10px 24px;
-  background: var(--green-800);
+  background: var(--brand-800);
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -548,7 +551,7 @@ body {
 }
 
 .btn-submit:hover:not(:disabled) {
-  background: var(--green-900);
+  background: var(--brand-900);
 }
 
 .btn-submit:disabled {
@@ -640,7 +643,7 @@ body {
 .checkbox-field input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: var(--green-700);
+  accent-color: var(--brand-700);
 }
 
 .role-permission-form .role-permission-role,
@@ -688,8 +691,8 @@ body {
 }
 
 .permission-badge.enabled {
-  background: var(--green-100);
-  color: var(--green-800);
+  background: var(--brand-100);
+  color: var(--brand-800);
 }
 
 .status-badge {
@@ -703,8 +706,8 @@ body {
 }
 
 .status-badge.active {
-  background: var(--green-100);
-  color: var(--green-800);
+  background: var(--brand-100);
+  color: var(--brand-800);
 }
 
 .status-badge.inactive {
@@ -739,7 +742,7 @@ body {
 }
 
 .app-toast-success {
-  background: var(--green-800);
+  background: var(--brand-800);
 }
 
 .app-toast-error {
@@ -847,7 +850,7 @@ body {
 
 .dissemination-detail-meta-item svg {
   flex-shrink: 0;
-  color: var(--green-800);
+  color: var(--brand-800);
 }
 
 .dissemination-detail-location-card {
@@ -882,7 +885,7 @@ body {
 }
 
 .dissemination-detail-location-row strong {
-  color: var(--green-800);
+  color: var(--brand-800);
   font-weight: 500;
 }
 
@@ -968,7 +971,7 @@ body {
 }
 
 .dissemination-detail-card-field .is-accent {
-  color: var(--green-800);
+  color: var(--brand-800);
 }
 
 .dissemination-detail-text-block {
@@ -1272,7 +1275,7 @@ body {
 }
 
 .toggle-switch input:checked + .toggle-track {
-  background: var(--green-600);
+  background: var(--brand-600);
 }
 
 .toggle-switch input:checked + .toggle-track::after {
@@ -1280,7 +1283,7 @@ body {
 }
 
 .toggle-switch input:focus-visible + .toggle-track {
-  outline: 2px solid var(--green-600);
+  outline: 2px solid var(--brand-600);
   outline-offset: 2px;
 }
 
@@ -1297,7 +1300,7 @@ body {
 }
 
 .toggle-value-label.is-active {
-  color: var(--green-700);
+  color: var(--brand-700);
 }
 
 .toggle-value-label.is-inactive {

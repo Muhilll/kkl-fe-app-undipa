@@ -40,13 +40,14 @@ const IconTrash = () => (
 export const createDosenColumns = (
   props: Pick<DosenTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<Dosen>[] => [
-  { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "NIDN", cell: (d) => <>{d.nidn}</> },
-  { header: "Nama", cell: (d) => <>{d.nama}</> },
-  { header: "Email", cell: (d) => <>{d.email}</> },
-  { header: "No. Telp", cell: (d) => <>{d.telp || "-"}</> },
+  { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (d) => d.id },
+  { header: "NIDN", cell: (d) => <>{d.nidn}</>, sortValue: (d) => d.nidn },
+  { header: "Nama", cell: (d) => <>{d.nama}</>, sortValue: (d) => d.nama },
+  { header: "Email", cell: (d) => <>{d.email}</>, sortValue: (d) => d.email },
+  { header: "No. Telp", cell: (d) => <>{d.telp || "-"}</>, sortValue: (d) => d.telp || "" },
   {
     header: "Actions",
+    sortable: false,
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
     cell: (d) => (

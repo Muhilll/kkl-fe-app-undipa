@@ -4,9 +4,11 @@ import type { PenilaianFormProps } from "../type/penilaian-props";
 import type { PenilaianFormData } from "../type/penilaian";
 
 const PenilaianForm: Component<PenilaianFormProps> = (props) => {
+  const isDisabled = () => props.isLoading || !!props.readOnly;
   const { formData, handleChange } = usePenilaianForm({
     initialData: () => props.initialData,
     defaultKklAgtId: props.defaultKklAgtId,
+    defaultInstansiPenilaiId: props.defaultInstansiPenilaiId,
   });
 
   const handleSubmit = (e: Event) => {
@@ -123,7 +125,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
             handleChange("kkl_agt_id", "");
             handleChange("instansi_penilai_id", "");
           }}
-          disabled={props.isLoading || !!props.defaultKklAgtId}
+          disabled={isDisabled() || !!props.defaultKklAgtId}
           required
         >
           <option value="" disabled selected>Pilih Instansi</option>
@@ -150,7 +152,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
               handleChange("kkl_agt_id", "");
               handleChange("instansi_penilai_id", "");
             }}
-            disabled={props.isLoading || !!props.defaultKklAgtId}
+            disabled={isDisabled() || !!props.defaultKklAgtId}
             required
           >
             <option value="" disabled selected>Pilih Periode KKL</option>
@@ -177,7 +179,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
               handleChange("kkl_agt_id", "");
               handleChange("instansi_penilai_id", "");
             }}
-            disabled={props.isLoading || !!props.defaultKklAgtId}
+            disabled={isDisabled() || !!props.defaultKklAgtId}
             required
           >
             <option value="" disabled selected>Pilih Kelompok KKL</option>
@@ -200,7 +202,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
             class="form-select"
             value={formData().kkl_agt_id || ""}
             onChange={(e) => handleChange("kkl_agt_id", e.target.value)}
-            disabled={props.isLoading || !!props.defaultKklAgtId}
+            disabled={isDisabled() || !!props.defaultKklAgtId}
             required
           >
             <option value="" disabled selected>Pilih Mahasiswa</option>
@@ -221,7 +223,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
             class="form-select"
             value={formData().instansi_penilai_id || ""}
             onChange={(e) => handleChange("instansi_penilai_id", e.target.value)}
-            disabled={props.isLoading}
+            disabled={isDisabled() || !!props.defaultInstansiPenilaiId}
             required
           >
             <option value="" disabled selected>Pilih Penilai</option>
@@ -251,7 +253,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
                   class="form-input"
                   value={(formData() as any)[field.key]}
                   onInput={(e) => handleChange(field.key as keyof PenilaianFormData, e.target.value)}
-                  disabled={props.isLoading}
+                  disabled={isDisabled()}
                   required
                 />
               </div>
@@ -260,7 +262,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
         </div>
       </div>
 
-      <button type="submit" class="btn-submit" disabled={props.isLoading} style={{ "grid-column": "1 / -1", "margin-top": "16px" }}>
+      <button type="submit" class="btn-submit" disabled={isDisabled()} style={{ "grid-column": "1 / -1", "margin-top": "16px" }}>
         {props.isLoading ? "Loading..." : props.initialData ? "Update Penilaian" : "Simpan Penilaian"}
       </button>
     </form>

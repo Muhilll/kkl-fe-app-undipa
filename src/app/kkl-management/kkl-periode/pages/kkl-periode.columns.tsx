@@ -40,11 +40,11 @@ const IconTrash = () => (
 export const createKklPeriodeColumns = (
   props: Pick<KklPeriodeTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<KklPeriode>[] => [
-  { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "Nama Periode", cell: (p) => <>{p.nama}</> },
-  { header: "Tahun", cell: (p) => <>{p.tahun}</> },
-  { header: "Semester", cell: (p) => <span style={{ "text-transform": "capitalize" }}>{p.semester}</span> },
-  { header: "Maks. Anggota/Klp", cell: (p) => <>{p.max_agt_klp}</> },
+  { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (p) => p.id },
+  { header: "Nama Periode", cell: (p) => <>{p.nama}</>, sortValue: (p) => p.nama },
+  { header: "Tahun", cell: (p) => <>{p.tahun}</>, sortValue: (p) => p.tahun },
+  { header: "Semester", cell: (p) => <span style={{ "text-transform": "capitalize" }}>{p.semester}</span>, sortValue: (p) => p.semester },
+  { header: "Maks. Anggota/Klp", cell: (p) => <>{p.max_agt_klp}</>, sortValue: (p) => p.max_agt_klp },
   {
     header: "Status",
     cell: (p) => (
@@ -52,9 +52,11 @@ export const createKklPeriodeColumns = (
         {p.is_active ? "Active" : "Inactive"}
       </span>
     ),
+    sortValue: (p) => p.is_active ? "Active" : "Inactive",
   },
   {
     header: "Actions",
+    sortable: false,
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
     cell: (p) => (

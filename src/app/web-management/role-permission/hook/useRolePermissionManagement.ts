@@ -59,6 +59,7 @@ export const useRolePermissionManagement = () => {
         role_id: role.id,
         menu_id: menu.id,
         menu_name: menu.name,
+        path: menu.path || "-",
         can_read: existing?.can_read || false,
         can_create: existing?.can_create || false,
         can_update: existing?.can_update || false,

@@ -54,7 +54,7 @@ const getHuruf = (ratarataStr: string) => {
 export const createPenilaianColumns = (
   props: Pick<PenilaianTableProps, "agts" | "penilais" | "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<Penilaian>[] => [
-    { header: "No", cell: (_, index) => <>{index + 1}</> },
+    { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (p) => p.id },
     {
       header: "Mahasiswa",
       cell: (p) => {
@@ -67,6 +67,10 @@ export const createPenilaianColumns = (
             </span>
           </div>
         );
+      },
+      sortValue: (p) => {
+        const agt = props.agts.find(a => a.id === p.kkl_agt_id);
+        return `${agt?.mahasiswa?.nama || ""} ${agt?.mahasiswa?.nim || ""}`;
       }
     },
     {
@@ -81,22 +85,28 @@ export const createPenilaianColumns = (
             </span>
           </div>
         );
+      },
+      sortValue: (p) => {
+        const penilai = props.penilais.find(i => i.id === p.instansi_penilai_id);
+        return `${penilai?.nama || ""} ${penilai?.jabatan || ""}`;
       }
     },
     {
       header: "Total Nilai",
-      cell: (p) => <span style={{ "font-weight": "600", color: "var(--blue-600)" }}>{p.total}</span>
+      cell: (p) => <span style={{ "font-weight": "600", color: "var(--blue-600)" }}>{p.total}</span>,
+      sortValue: (p) => p.total
     },
     {
       header: "Rata-rata",
-      cell: (p) => <span style={{ "font-weight": "600", color: "var(--blue-600)" }}>{p.ratarata}</span>
+      cell: (p) => <span style={{ "font-weight": "600", color: "var(--blue-600)" }}>{p.ratarata}</span>,
+      sortValue: (p) => p.ratarata
     },
     {
       header: "Huruf",
       cell: (p) => {
         const huruf = getHuruf(p.ratarata);
         const color =
-          huruf.startsWith("A") ? "var(--green-600)" :
+          huruf.startsWith("A") ? "var(--brand-600)" :
             huruf.startsWith("B") ? "var(--blue-600)" :
               huruf.startsWith("C") ? "var(--orange-600)" :
                 "var(--red-600)";
@@ -112,10 +122,12 @@ export const createPenilaianColumns = (
             {huruf}
           </span>
         );
-      }
+      },
+      sortValue: (p) => getHuruf(p.ratarata)
     },
     {
       header: "Actions",
+      sortable: false,
       headerStyle: { "text-align": "right" },
       cellClass: "td-actions",
       cell: (p) => (

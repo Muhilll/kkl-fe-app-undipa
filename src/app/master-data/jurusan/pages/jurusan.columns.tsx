@@ -55,13 +55,22 @@ const formatDate = (value?: string) => {
 export const createJurusanColumns = (
   props: Pick<JurusanTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<Jurusan>[] => [
-  { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "Kode", cell: (jurusan) => <>{jurusan.kode}</> },
-  { header: "Nama", cell: (jurusan) => <>{jurusan.nama}</> },
-  { header: "Created At", cell: (jurusan) => <>{formatDate(jurusan.created_at)}</> },
-  { header: "Updated At", cell: (jurusan) => <>{formatDate(jurusan.updated_at)}</> },
+  { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (jurusan) => jurusan.id },
+  { header: "Kode", cell: (jurusan) => <>{jurusan.kode}</>, sortValue: (jurusan) => jurusan.kode },
+  { header: "Nama", cell: (jurusan) => <>{jurusan.nama}</>, sortValue: (jurusan) => jurusan.nama },
+  {
+    header: "Created At",
+    cell: (jurusan) => <>{formatDate(jurusan.created_at)}</>,
+    sortValue: (jurusan) => jurusan.created_at || "",
+  },
+  {
+    header: "Updated At",
+    cell: (jurusan) => <>{formatDate(jurusan.updated_at)}</>,
+    sortValue: (jurusan) => jurusan.updated_at || "",
+  },
   {
     header: "Actions",
+    sortable: false,
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
     cell: (jurusan) => (

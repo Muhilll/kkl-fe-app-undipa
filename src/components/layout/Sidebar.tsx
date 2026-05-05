@@ -90,13 +90,13 @@ const Sidebar: Component<SidebarProps> = (props) => {
             </span>
           </button>
 
-          <Show when={isExpanded()}>
+          <div class={`sidebar-submenu-wrapper ${isExpanded() ? 'expanded' : ''}`}>
             <div class="sidebar-submenu">
               <For each={nodeProps.item.children}>
                 {(child) => <NavNode item={child} level={level() + 1} />}
               </For>
             </div>
-          </Show>
+          </div>
         </Show>
       </div>
     );
@@ -109,10 +109,10 @@ const Sidebar: Component<SidebarProps> = (props) => {
       </button>
 
       <div class="sidebar-brand">
-        <div class="sidebar-brand-icon">EA</div>
+        <div class="sidebar-brand-icon">KKL</div>
         <div class="sidebar-brand-text">
-          <span class="sidebar-brand-name">Estate Admin</span>
-          <span class="sidebar-brand-sub">Management Portal</span>
+          <span class="sidebar-brand-name">UNDIPA APP</span>
+          <span class="sidebar-brand-sub">KKL Management Portal</span>
         </div>
       </div>
 
@@ -137,8 +137,8 @@ const Sidebar: Component<SidebarProps> = (props) => {
       </nav>
 
       <div class="sidebar-bottom">
-        <A href="/help" class="sidebar-bottom-item">
-          Help Center
+        <A href="https://admisi.undipa.ac.id/" class="sidebar-bottom-item">
+          Main Page
         </A>
 
         <button onClick={props.onLogout} class="sidebar-bottom-item logout">

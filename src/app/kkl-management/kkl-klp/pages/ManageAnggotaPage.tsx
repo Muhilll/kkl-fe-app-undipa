@@ -236,9 +236,9 @@ const ManageAnggotaPage: Component = () => {
                         title="Lihat Penilaian"
                         style={{
                           padding: "6px 10px",
-                          "background-color": "var(--green-50)",
-                          color: "var(--green-600)",
-                          border: "1px solid var(--green-200)",
+                          "background-color": "var(--brand-50)",
+                          color: "var(--brand-600)",
+                          border: "1px solid var(--brand-200)",
                           "border-radius": "6px",
                           cursor: loading() ? "not-allowed" : "pointer",
                           display: "inline-flex",

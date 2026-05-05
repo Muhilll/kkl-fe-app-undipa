@@ -4,6 +4,7 @@ import Modal from "../../../../components/ui/Modal";
 import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { useMahasiswaManagement } from "../hook/useMahasiswaManagement";
 import MahasiswaForm from "./Form";
 import MahasiswaTable from "./Table";
@@ -25,6 +26,23 @@ const IconPlusCircle = () => (
   </svg>
 );
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const MahasiswaPage: Component = () => {
   const mahasiswaManagement = useMahasiswaManagement();
   const permissions = usePagePermissions();
@@ -36,12 +54,27 @@ const MahasiswaPage: Component = () => {
       <PageHeader
         title="Mahasiswa Management"
         description="Manage mahasiswa data."
-        action={permissions.canCreate() ? (
-          <button class="btn-create" onClick={mahasiswaManagement.openCreateForm}>
-            <IconPlusCircle />
-            Add New Mahasiswa
-          </button>
-        ) : undefined}
+        action={
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button class="btn-secondary" onClick={() => printTableToPdf({
+                title: "Data Mahasiswa",
+                subtitle: "Daftar mahasiswa yang terdaftar dalam sistem.",
+                headers: ["No", "NIM", "Nama", "Email", "Telp", "Jurusan"],
+                rows: mahasiswaManagement.mahasiswas().map((m, i) => [String(i + 1), m.nim, m.nama, m.email, m.telp || "-", m.jurusan?.nama || "-"]),
+              })}>
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={mahasiswaManagement.openCreateForm}>
+                <IconPlusCircle />
+                Add New Mahasiswa
+              </button>
+            </Show>
+          </div>
+        }
       />
 
       <Show when={mahasiswaManagement.error()}>

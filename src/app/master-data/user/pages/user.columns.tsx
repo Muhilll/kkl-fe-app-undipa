@@ -40,12 +40,21 @@ const IconTrash = () => (
 export const createUserColumns = (
   props: Pick<UserTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete">,
 ): DataTableColumn<User>[] => [
-  { header: "No", cell: (_, index) => <>{index + 1}</> },
-  { header: "Username", cell: (user) => <>{user.username}</> },
-  { header: "Role", cell: (user) => <>{user.role?.name || user.role_id}</> },
-  { header: "Status", cell: (user) => <>{user.is_active ? "Active" : "Inactive"}</> },
+  { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (user) => user.id },
+  { header: "Username", cell: (user) => <>{user.username}</>, sortValue: (user) => user.username },
+  {
+    header: "Role",
+    cell: (user) => <>{user.role?.name || user.role_id}</>,
+    sortValue: (user) => user.role?.name || user.role_id,
+  },
+  {
+    header: "Status",
+    cell: (user) => <>{user.is_active ? "Active" : "Inactive"}</>,
+    sortValue: (user) => (user.is_active ? "Active" : "Inactive"),
+  },
   {
     header: "Actions",
+    sortable: false,
     headerStyle: { "text-align": "right" },
     cellClass: "td-actions",
     cell: (user) => (

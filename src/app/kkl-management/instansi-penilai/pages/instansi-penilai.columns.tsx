@@ -21,17 +21,18 @@ const IconTrash = () => (
 export const createInstansiPenilaiColumns = (
   props: Pick<InstansiPenilaiTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete" | "klps">,
 ): DataTableColumn<InstansiPenilai>[] => [
-    { header: "No", cell: (_, index) => <>{index + 1}</> },
+    { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (p) => p.id },
     {
       header: "Virtual Account",
       cell: (p) => (
         <div style={{ "font-family": "monospace", "font-size": "13px", "font-weight": "bold", color: "var(--blue-700, #1d4ed8)", padding: "4px 8px", "background-color": "var(--blue-50, #eff6ff)", "border-radius": "4px", display: "inline-block" }}>
           {p.virtual_account}
         </div>
-      )
+      ),
+      sortValue: (p) => p.virtual_account
     },
-    { header: "Nama", cell: (p) => <>{p.nama}</> },
-    { header: "Jabatan", cell: (p) => <>{p.jabatan}</> },
+    { header: "Nama", cell: (p) => <>{p.nama}</>, sortValue: (p) => p.nama },
+    { header: "Jabatan", cell: (p) => <>{p.jabatan}</>, sortValue: (p) => p.jabatan },
     {
       header: "Kelompok KKL",
       cell: (p) => {
@@ -51,10 +52,15 @@ export const createInstansiPenilaiColumns = (
             ) : "-"}
           </>
         );
+      },
+      sortValue: (p) => {
+        const klp = props.klps.find(k => k.id === p.kkl_klp_id);
+        return klp ? `${klp.nama} ${klp.dosen?.nama || ""} ${klp.instansi?.nama || ""}` : "";
       }
     },
     {
       header: "Actions",
+      sortable: false,
       headerStyle: { "text-align": "right" },
       cellClass: "td-actions",
       cell: (p) => (

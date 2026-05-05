@@ -287,13 +287,12 @@ const LaporanForm: Component<LaporanFormProps> = (props) => {
         <label for="aktifitas">Aktifitas</label>
         <textarea
           id="aktifitas"
-          class="form-input"
+          class="form-textarea"
           value={formData().aktifitas}
           onInput={(e) => handleChange("aktifitas", e.target.value)}
           disabled={props.isLoading}
           required
           rows={4}
-          style={{ resize: "vertical" }}
         />
       </div>
 
