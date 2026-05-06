@@ -8,7 +8,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
   const { formData, handleChange } = usePenilaianForm({
     initialData: () => props.initialData,
     defaultKklAgtId: props.defaultKklAgtId,
-    defaultInstansiPenilaiId: props.defaultInstansiPenilaiId,
+    defaultPembimbingId: props.defaultPembimbingId,
   });
 
   const handleSubmit = (e: Event) => {
@@ -16,7 +16,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
     const data = formData();
     const payload = {
       kkl_agt_id: Number(data.kkl_agt_id) || 0,
-      instansi_penilai_id: Number(data.instansi_penilai_id) || 0,
+      pembimbing_id: Number(data.pembimbing_id) || 0,
       lama_praktek: Number(data.lama_praktek) || 0,
       kehadiran: Number(data.kehadiran) || 0,
       disiplin: Number(data.disiplin) || 0,
@@ -123,7 +123,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
             setSelectedPeriodeId("");
             setSelectedKlpId("");
             handleChange("kkl_agt_id", "");
-            handleChange("instansi_penilai_id", "");
+            handleChange("pembimbing_id", "");
           }}
           disabled={isDisabled() || !!props.defaultKklAgtId}
           required
@@ -150,7 +150,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
               setSelectedPeriodeId(e.target.value);
               setSelectedKlpId("");
               handleChange("kkl_agt_id", "");
-              handleChange("instansi_penilai_id", "");
+              handleChange("pembimbing_id", "");
             }}
             disabled={isDisabled() || !!props.defaultKklAgtId}
             required
@@ -177,7 +177,7 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
             onChange={(e) => {
               setSelectedKlpId(e.target.value);
               handleChange("kkl_agt_id", "");
-              handleChange("instansi_penilai_id", "");
+              handleChange("pembimbing_id", "");
             }}
             disabled={isDisabled() || !!props.defaultKklAgtId}
             required
@@ -217,13 +217,13 @@ const PenilaianForm: Component<PenilaianFormProps> = (props) => {
         </div>
 
         <div class="form-group" style={{ "grid-column": "1 / -1" }}>
-          <label for="instansi_penilai_id">Instansi Penilai (Penanggung Jawab)</label>
+          <label for="pembimbing_id">Pembimbing Lapangan (Penanggung Jawab)</label>
           <select
-            id="instansi_penilai_id"
+            id="pembimbing_id"
             class="form-select"
-            value={formData().instansi_penilai_id || ""}
-            onChange={(e) => handleChange("instansi_penilai_id", e.target.value)}
-            disabled={isDisabled() || !!props.defaultInstansiPenilaiId}
+            value={formData().pembimbing_id || ""}
+            onChange={(e) => handleChange("pembimbing_id", e.target.value)}
+            disabled={isDisabled() || !!props.defaultPembimbingId}
             required
           >
             <option value="" disabled selected>Pilih Penilai</option>

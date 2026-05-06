@@ -58,7 +58,7 @@ const PenilaianPage: Component = () => {
                   headers: ["No", "Mahasiswa", "NIM", "Penilai", "Total", "Rata-rata", "Huruf"],
                   rows: penilaianManagement.penilaians().map((p, i) => {
                     const agt = agts.find(a => a.id === p.kkl_agt_id);
-                    const penilai = penilais.find(ip => ip.id === p.instansi_penilai_id);
+                    const penilai = penilais.find(ip => ip.id === p.pembimbing_id);
                     return [String(i + 1), agt?.mahasiswa?.nama || "-", agt?.mahasiswa?.nim || "-", penilai?.nama || "-", String(p.total), String(p.ratarata), getHuruf(p.ratarata)];
                   }),
                 });

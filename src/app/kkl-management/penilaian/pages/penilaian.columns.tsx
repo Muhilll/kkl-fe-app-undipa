@@ -74,9 +74,9 @@ export const createPenilaianColumns = (
       }
     },
     {
-      header: "Penilai (Instansi)",
+      header: "Pembimbing Lapangan",
       cell: (p) => {
-        const penilai = props.penilais.find(i => i.id === p.instansi_penilai_id);
+        const penilai = props.penilais.find(i => i.id === p.pembimbing_id);
         return (
           <div style={{ display: "flex", "flex-direction": "column", gap: "2px" }}>
             <span style={{ "font-weight": "500" }}>{penilai?.nama || "-"}</span>
@@ -87,7 +87,7 @@ export const createPenilaianColumns = (
         );
       },
       sortValue: (p) => {
-        const penilai = props.penilais.find(i => i.id === p.instansi_penilai_id);
+        const penilai = props.penilais.find(i => i.id === p.pembimbing_id);
         return `${penilai?.nama || ""} ${penilai?.jabatan || ""}`;
       }
     },

@@ -1,7 +1,7 @@
 import { Route } from "@solidjs/router";
 import ProtectedPage from "../../../router/ProtectedRoute";
 import InstansiPage from "./pages/Index";
-import ManageInstansiPenilaiPage from "./pages/ManageInstansiPenilaiPage";
+import ManagePembimbingLapanganPage from "./pages/ManagePembimbingLapanganPage";
 
 export const instansiRoutes = (
   <>
@@ -14,10 +14,10 @@ export const instansiRoutes = (
       )}
     />
     <Route
-      path="/kkl-management/instansis/:id/penilais"
+      path="/kkl-management/instansis/:id/pembimbing-lapangans"
       component={() => (
         <ProtectedPage>
-          <ManageInstansiPenilaiPage />
+          <ManagePembimbingLapanganPage />
         </ProtectedPage>
       )}
     />

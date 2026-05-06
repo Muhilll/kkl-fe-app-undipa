@@ -11,7 +11,7 @@ import { kklAgtAPI } from "../../kkl-agt/service/kkl-agt.api";
 import { instansiAPI } from "../../instansi/service/instansi.api";
 import { kklKlpAPI } from "../service/kkl-klp.api";
 import { kklPeriodeAPI } from "../../kkl-periode/service/kkl-periode.api";
-import { instansiPenilaiAPI } from "../../instansi-penilai/service/instansi-penilai.api";
+import { pembimbingLapanganAPI } from "../../pembimbing-lapangan/service/pembimbing-lapangan.api";
 import type { Penilaian, CreatePenilaianInput, UpdatePenilaianInput } from "../../penilaian/type/penilaian";
 import type { KklAgt } from "../../kkl-agt/type/kkl-agt";
 
@@ -53,7 +53,7 @@ const ManagePenilaianAnggotaPage: Component = () => {
         kklAgtAPI.getById(String(agtId)),
         instansiAPI.getAll(),
         kklKlpAPI.getAll(),
-        instansiPenilaiAPI.getAll(),
+        pembimbingLapanganAPI.getAll(),
         kklPeriodeAPI.getAll()
       ]);
       if (penilaianRes.success && penilaianRes.data) {

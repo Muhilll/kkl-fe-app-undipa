@@ -1,4 +1,4 @@
-export interface InstansiPenilai {
+export interface PembimbingLapangan {
   id: number;
   kkl_klp_id: number;
   virtual_account: string;
@@ -12,15 +12,15 @@ export interface InstansiPenilai {
   user?: any; // To hold related User data
 }
 
-export interface CreateInstansiPenilaiInput {
+export interface CreatePembimbingLapanganInput {
   kkl_klp_id: number | null;
   virtual_account: string;
-  password?: string; // Optional because we might auto-generate it or let user input it
+  password?: string;
   nama: string;
   jabatan: string;
 }
 
-export interface UpdateInstansiPenilaiInput {
+export interface UpdatePembimbingLapanganInput {
   kkl_klp_id?: number;
   virtual_account?: string;
   password?: string;

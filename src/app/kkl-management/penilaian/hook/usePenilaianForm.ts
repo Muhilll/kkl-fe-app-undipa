@@ -4,13 +4,13 @@ import type { Penilaian, PenilaianFormData } from "../type/penilaian";
 interface UsePenilaianFormOptions {
   initialData?: () => Penilaian | undefined;
   defaultKklAgtId?: number;
-  defaultInstansiPenilaiId?: number;
+  defaultPembimbingId?: number;
 }
 
 export const usePenilaianForm = (options: UsePenilaianFormOptions) => {
   const [formData, setFormData] = createSignal<PenilaianFormData>({
     kkl_agt_id: options.initialData?.()?.kkl_agt_id?.toString() || options.defaultKklAgtId?.toString() || "",
-    instansi_penilai_id: options.initialData?.()?.instansi_penilai_id?.toString() || options.defaultInstansiPenilaiId?.toString() || "",
+    pembimbing_id: options.initialData?.()?.pembimbing_id?.toString() || options.defaultPembimbingId?.toString() || "",
     lama_praktek: options.initialData?.()?.lama_praktek?.toString() || "",
     kehadiran: options.initialData?.()?.kehadiran?.toString() || "",
     disiplin: options.initialData?.()?.disiplin?.toString() || "",
@@ -30,7 +30,7 @@ export const usePenilaianForm = (options: UsePenilaianFormOptions) => {
     const data = options.initialData?.();
     setFormData({
       kkl_agt_id: data?.kkl_agt_id?.toString() || options.defaultKklAgtId?.toString() || "",
-      instansi_penilai_id: data?.instansi_penilai_id?.toString() || options.defaultInstansiPenilaiId?.toString() || "",
+      pembimbing_id: data?.pembimbing_id?.toString() || options.defaultPembimbingId?.toString() || "",
       lama_praktek: data?.lama_praktek?.toString() || "",
       kehadiran: data?.kehadiran?.toString() || "",
       disiplin: data?.disiplin?.toString() || "",

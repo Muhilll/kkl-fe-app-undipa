@@ -5,9 +5,9 @@ import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
 import { printTableToPdf } from "../../../../utils/printTableToPdf";
-import { useInstansiPenilaiManagement } from "../hook/useInstansiPenilaiManagement";
-import InstansiPenilaiForm from "./Form";
-import InstansiPenilaiTable from "./Table";
+import { usePembimbingLapanganManagement } from "../hook/usePembimbingLapanganManagement";
+import PembimbingLapanganForm from "./Form";
+import PembimbingLapanganTable from "./Table";
 
 const IconPlusCircle = () => (
   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -34,8 +34,8 @@ const IconPrinter = () => (
   </svg>
 );
 
-const InstansiPenilaiPage: Component = () => {
-  const management = useInstansiPenilaiManagement();
+const PembimbingLapanganPage: Component = () => {
+  const management = usePembimbingLapanganManagement();
   const permissions = usePagePermissions();
 
   return (
@@ -43,18 +43,18 @@ const InstansiPenilaiPage: Component = () => {
       <Toast toast={management.toast()} onClose={management.clearToast} />
 
       <PageHeader
-        title="Instansi Penilai Management"
-        description="Kelola akun penilai dari instansi tempat KKL (Virtual Account otomatis membuat akun)."
+        title="Pembimbing Lapangan Management"
+        description="Kelola akun pembimbing lapangan tempat KKL (Virtual Account otomatis membuat akun)."
         action={
           <div style={{ display: "flex", gap: "10px" }}>
             <Show when={permissions.canReport()}>
               <button class="btn-secondary" onClick={() => {
                 const klps = management.klps();
                 printTableToPdf({
-                  title: "Data Instansi Penilai",
-                  subtitle: "Daftar akun penilai dari instansi tempat KKL.",
+                  title: "Data Pembimbing Lapangan",
+                  subtitle: "Daftar akun pembimbing lapangan tempat KKL.",
                   headers: ["No", "Virtual Account", "Nama", "Jabatan", "Kelompok KKL"],
-                  rows: management.instansiPenilais().map((p, i) => {
+                  rows: management.pembimbingLapangans().map((p, i) => {
                     const klp = klps.find(k => k.id === p.kkl_klp_id);
                     return [String(i + 1), p.virtual_account, p.nama, p.jabatan, klp?.nama || "-"];
                   }),
@@ -67,7 +67,7 @@ const InstansiPenilaiPage: Component = () => {
             <Show when={permissions.canCreate()}>
               <button class="btn-create" onClick={management.openCreateForm}>
                 <IconPlusCircle />
-                Buat Akun Penilai
+                Buat Akun Pembimbing
               </button>
             </Show>
           </div>
@@ -81,11 +81,11 @@ const InstansiPenilaiPage: Component = () => {
       <Modal open={management.showForm()} onClose={management.closeForm}>
         <div class="form-section">
           <div class="form-section-header">
-            <h2>{management.editingInstansiPenilai() ? "Edit Instansi Penilai" : "Buat Akun Instansi Penilai"}</h2>
+            <h2>{management.editingPembimbingLapangan() ? "Edit Pembimbing Lapangan" : "Buat Akun Pembimbing Lapangan"}</h2>
             <button onClick={management.closeForm} class="btn-secondary" type="button">Cancel</button>
           </div>
-          <InstansiPenilaiForm
-            initialData={management.editingInstansiPenilai() || undefined}
+          <PembimbingLapanganForm
+            initialData={management.editingPembimbingLapangan() || undefined}
             klps={management.availableKlps()}
             instansis={management.instansis()}
             periodes={management.periodes()}
@@ -97,16 +97,16 @@ const InstansiPenilaiPage: Component = () => {
 
       <ConfirmModal
         open={!!management.deletingId()}
-        title="Delete Instansi Penilai"
-        message="Are you sure you want to delete this Instansi Penilai? This action cannot be undone and will permanently remove their access."
+        title="Delete Pembimbing Lapangan"
+        message="Are you sure you want to delete this Pembimbing Lapangan? This action cannot be undone and will permanently remove their access."
         confirmLabel={management.isLoading() ? "Deleting..." : "Delete"}
         confirmLoading={management.isLoading()}
         onConfirm={management.handleDeleteConfirm}
         onCancel={() => management.setDeletingId(null)}
       />
 
-      <InstansiPenilaiTable
-        instansiPenilais={management.instansiPenilais()}
+      <PembimbingLapanganTable
+        pembimbingLapangans={management.pembimbingLapangans()}
         klps={management.klps()}
         isLoading={management.isLoading()}
         canUpdate={permissions.canUpdate()}
@@ -118,4 +118,4 @@ const InstansiPenilaiPage: Component = () => {
   );
 };
 
-export default InstansiPenilaiPage;
+export default PembimbingLapanganPage;

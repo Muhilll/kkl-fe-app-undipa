@@ -109,7 +109,7 @@ const MahasiswaPenilaianPage: Component = () => {
     <div class="user-page">
       <PageHeader
         title="Penilaian KKL Saya"
-        description="Daftar nilai KKL yang sudah diberikan oleh instansi penilai."
+        description="Daftar nilai KKL yang sudah diberikan oleh pembimbing lapangan."
       />
 
       <Show when={error()}>

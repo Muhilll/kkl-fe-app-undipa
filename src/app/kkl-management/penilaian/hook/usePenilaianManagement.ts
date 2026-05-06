@@ -2,9 +2,9 @@ import { createSignal, onMount } from "solid-js";
 import { penilaianApi } from "../service/penilaian.api";
 import type { Penilaian, CreatePenilaianInput, UpdatePenilaianInput } from "../type/penilaian";
 import type { KklAgt } from "../../kkl-agt/type/kkl-agt";
-import type { InstansiPenilai } from "../../instansi-penilai/type/instansi-penilai";
+import type { PembimbingLapangan } from "../../pembimbing-lapangan/type/pembimbing-lapangan";
 import { kklAgtAPI } from "../../kkl-agt/service/kkl-agt.api";
-import { instansiPenilaiAPI } from "../../instansi-penilai/service/instansi-penilai.api";
+import { pembimbingLapanganAPI } from "../../pembimbing-lapangan/service/pembimbing-lapangan.api";
 import { instansiAPI } from "../../instansi/service/instansi.api";
 import { kklKlpAPI } from "../../kkl-klp/service/kkl-klp.api";
 import { kklPeriodeAPI } from "../../kkl-periode/service/kkl-periode.api";
@@ -14,7 +14,7 @@ import type { KklKlp } from "../../kkl-klp/type/kkl-klp";
 export const usePenilaianManagement = () => {
   const [penilaians, setPenilaians] = createSignal<Penilaian[]>([]);
   const [agts, setAgts] = createSignal<KklAgt[]>([]);
-  const [penilais, setPenilais] = createSignal<InstansiPenilai[]>([]);
+  const [penilais, setPenilais] = createSignal<PembimbingLapangan[]>([]);
   const [instansis, setInstansis] = createSignal<Instansi[]>([]);
   const [klps, setKlps] = createSignal<KklKlp[]>([]);
   const [periodes, setPeriodes] = createSignal<any[]>([]);
@@ -33,7 +33,7 @@ export const usePenilaianManagement = () => {
       const [penilaianRes, agtRes, penilaiRes, instansiRes, klpRes, periodeRes] = await Promise.all([
         penilaianApi.getAll(),
         kklAgtAPI.getAll(),
-        instansiPenilaiAPI.getAll(),
+        pembimbingLapanganAPI.getAll(),
         instansiAPI.getAll(),
         kklKlpAPI.getAll(),
         kklPeriodeAPI.getAll(),

@@ -1,18 +1,18 @@
 import { createSignal, onMount } from "solid-js";
-import { instansiPenilaiAPI } from "../service/instansi-penilai.api";
+import { pembimbingLapanganAPI } from "../service/pembimbing-lapangan.api";
 import { kklKlpAPI } from "../../kkl-klp/service/kkl-klp.api";
 import { instansiAPI } from "../../instansi/service/instansi.api";
 import { kklPeriodeAPI } from "../../kkl-periode/service/kkl-periode.api";
-import type { InstansiPenilai, CreateInstansiPenilaiInput, UpdateInstansiPenilaiInput } from "../type/instansi-penilai";
+import type { PembimbingLapangan, CreatePembimbingLapanganInput, UpdatePembimbingLapanganInput } from "../type/pembimbing-lapangan";
 
-export const useInstansiPenilaiManagement = () => {
-  const [instansiPenilais, setInstansiPenilais] = createSignal<InstansiPenilai[]>([]);
-  const [klps, setKlps] = createSignal<any[]>([]); // KKL Kelompoks for dropdown
+export const usePembimbingLapanganManagement = () => {
+  const [pembimbingLapangans, setPembimbingLapangans] = createSignal<PembimbingLapangan[]>([]);
+  const [klps, setKlps] = createSignal<any[]>([]);
   const [instansis, setInstansis] = createSignal<any[]>([]);
   const [periodes, setPeriodes] = createSignal<any[]>([]);
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
-  const [editingInstansiPenilai, setEditingInstansiPenilai] = createSignal<InstansiPenilai | null>(null);
+  const [editingPembimbingLapangan, setEditingPembimbingLapangan] = createSignal<PembimbingLapangan | null>(null);
   const [showForm, setShowForm] = createSignal(false);
   const [deletingId, setDeletingId] = createSignal<string | null>(null);
   const [toast, setToast] = createSignal<{ type: "success" | "error"; message: string } | null>(null);
@@ -22,15 +22,15 @@ export const useInstansiPenilaiManagement = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const [ipRes, klpRes, instansiRes, periodeRes] = await Promise.all([
-        instansiPenilaiAPI.getAll(),
+      const [plRes, klpRes, instansiRes, periodeRes] = await Promise.all([
+        pembimbingLapanganAPI.getAll(),
         kklKlpAPI.getAll(),
         instansiAPI.getAll(),
         kklPeriodeAPI.getAll(),
       ]);
 
-      if (ipRes.success && ipRes.data) {
-        setInstansiPenilais(ipRes.data);
+      if (plRes.success && plRes.data) {
+        setPembimbingLapangans(plRes.data);
       }
       if (klpRes.success && klpRes.data) {
         setKlps(klpRes.data);
@@ -46,7 +46,7 @@ export const useInstansiPenilaiManagement = () => {
 
   onMount(fetchData);
 
-  const submitInstansiPenilai = async (data: CreateInstansiPenilaiInput | UpdateInstansiPenilaiInput) => {
+  const submitPembimbingLapangan = async (data: CreatePembimbingLapanganInput | UpdatePembimbingLapanganInput) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -56,15 +56,15 @@ export const useInstansiPenilaiManagement = () => {
         delete submitData.password;
       }
 
-      const editing = editingInstansiPenilai();
+      const editing = editingPembimbingLapangan();
       const result = editing
-        ? await instansiPenilaiAPI.update(String(editing.id), submitData as UpdateInstansiPenilaiInput)
-        : await instansiPenilaiAPI.create(submitData as CreateInstansiPenilaiInput);
+        ? await pembimbingLapanganAPI.update(String(editing.id), submitData as UpdatePembimbingLapanganInput)
+        : await pembimbingLapanganAPI.create(submitData as CreatePembimbingLapanganInput);
 
       if (result.success) {
-        setToast({ type: "success", message: editing ? "Instansi Penilai updated!" : "Instansi Penilai created!" });
+        setToast({ type: "success", message: editing ? "Pembimbing Lapangan updated!" : "Pembimbing Lapangan created!" });
         setShowForm(false);
-        setEditingInstansiPenilai(null);
+        setEditingPembimbingLapangan(null);
         await fetchData();
       } else {
         setToast({ type: "error", message: result.error || "Operation failed" });
@@ -76,21 +76,21 @@ export const useInstansiPenilaiManagement = () => {
     }
   };
 
-  const handleEdit = (instansiPenilai: InstansiPenilai) => {
-    setEditingInstansiPenilai(instansiPenilai);
+  const handleEdit = (pembimbingLapangan: PembimbingLapangan) => {
+    setEditingPembimbingLapangan(pembimbingLapangan);
     setShowForm(true);
     setError(null);
   };
 
   const openCreateForm = () => {
     setShowForm(true);
-    setEditingInstansiPenilai(null);
+    setEditingPembimbingLapangan(null);
     setError(null);
   };
 
   const closeForm = () => {
     setShowForm(false);
-    setEditingInstansiPenilai(null);
+    setEditingPembimbingLapangan(null);
   };
 
   const requestDelete = (id: string) => setDeletingId(id);
@@ -100,9 +100,9 @@ export const useInstansiPenilaiManagement = () => {
     if (!id) return;
     setIsLoading(true);
     try {
-      const result = await instansiPenilaiAPI.delete(id);
+      const result = await pembimbingLapanganAPI.delete(id);
       if (result.success) {
-        setToast({ type: "success", message: "Instansi Penilai deleted!" });
+        setToast({ type: "success", message: "Pembimbing Lapangan deleted!" });
         await fetchData();
       } else {
         setToast({ type: "error", message: result.error || "Delete failed" });
@@ -116,8 +116,8 @@ export const useInstansiPenilaiManagement = () => {
   };
 
   const availableKlps = () => {
-    const takenKlpIds = instansiPenilais().map(ip => ip.kkl_klp_id);
-    const editingId = editingInstansiPenilai()?.kkl_klp_id;
+    const takenKlpIds = pembimbingLapangans().map(pl => pl.kkl_klp_id);
+    const editingId = editingPembimbingLapangan()?.kkl_klp_id;
     return klps().filter(k => {
       if (k.id === editingId) return true;
       return !takenKlpIds.includes(k.id);
@@ -125,20 +125,20 @@ export const useInstansiPenilaiManagement = () => {
   };
 
   return {
-    instansiPenilais,
+    pembimbingLapangans,
     klps,
     availableKlps,
     instansis,
     periodes,
     isLoading,
     error,
-    editingInstansiPenilai,
+    editingPembimbingLapangan,
     showForm,
     deletingId,
     setDeletingId,
     toast,
     clearToast,
-    handleSubmit: submitInstansiPenilai,
+    handleSubmit: submitPembimbingLapangan,
     handleEdit,
     openCreateForm,
     closeForm,

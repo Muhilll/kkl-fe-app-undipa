@@ -48,7 +48,7 @@ const RolePermissionForm: Component<RolePermissionFormProps> = (props) => {
             <thead>
               <tr>
                 <th>Menu</th>
-                <th>Path</th>
+                <th>Parh</th>
                 <th>Can Read</th>
                 <th>Can Create</th>
                 <th>Can Update</th>

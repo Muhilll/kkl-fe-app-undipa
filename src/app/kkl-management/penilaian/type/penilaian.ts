@@ -1,7 +1,7 @@
 export interface Penilaian {
   id: number;
   kkl_agt_id: number;
-  instansi_penilai_id: number;
+  pembimbing_id: number;
   lama_praktek: number;
   kehadiran: number;
   disiplin: number;
@@ -23,7 +23,7 @@ export interface Penilaian {
 
 export interface CreatePenilaianInput {
   kkl_agt_id: number;
-  instansi_penilai_id: number;
+  pembimbing_id: number;
   lama_praktek: number;
   kehadiran: number;
   disiplin: number;
@@ -41,7 +41,7 @@ export interface CreatePenilaianInput {
 
 export interface UpdatePenilaianInput {
   kkl_agt_id?: number;
-  instansi_penilai_id?: number;
+  pembimbing_id?: number;
   lama_praktek?: number;
   kehadiran?: number;
   disiplin?: number;
@@ -59,7 +59,7 @@ export interface UpdatePenilaianInput {
 
 export interface PenilaianFormData {
   kkl_agt_id: string;
-  instansi_penilai_id: string;
+  pembimbing_id: string;
   lama_praktek: string;
   kehadiran: string;
   disiplin: string;

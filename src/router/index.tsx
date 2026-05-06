@@ -14,14 +14,14 @@ import { jurusanRoutes } from '../app/master-data/jurusan/route';
 import { mahasiswaRoutes } from '../app/master-data/mahasiswa/route';
 import { dosenRoutes } from '../app/master-data/dosen/route';
 import { instansiRoutes } from '../app/kkl-management/instansi/route';
-import { instansiPenilaiRoutes } from '../app/kkl-management/instansi-penilai/route';
+import { pembimbingLapanganRoutes } from '../app/kkl-management/pembimbing-lapangan/route';
 import { kklPeriodeRoutes } from '../app/kkl-management/kkl-periode/route';
 import { kklKlpRoutes } from '../app/kkl-management/kkl-klp/route';
 import { kklAgtRoutes } from '../app/kkl-management/kkl-agt/route';
 import { laporanRoutes } from '../app/kkl-management/laporan/route';
 import { penilaianRoutes } from '../app/kkl-management/penilaian/route';
 import { dosenAreaRoutes } from '../app/dosen/route';
-import { pembimbingLapanganRoutes } from '../app/pembimbing-lapangan/route';
+import { pembimbingLapanganAreaRoutes } from '../app/pembimbing-lapangan/route';
 import { mahasiswaLaporanRoutes } from '../app/mahasiswa/laporan/route';
 import { mahasiswaPenilaianRoutes } from '../app/mahasiswa/penilaian/route';
 import { publicInstansiRoutes } from '../app/instansi/route';
@@ -59,14 +59,14 @@ export const routeConfig = (
       {mahasiswaRoutes}
       {dosenRoutes}
       {instansiRoutes}
-      {instansiPenilaiRoutes}
+      {pembimbingLapanganRoutes}
       {kklPeriodeRoutes}
       {kklKlpRoutes}
       {kklAgtRoutes}
       {laporanRoutes}
       {penilaianRoutes}
       {dosenAreaRoutes}
-      {pembimbingLapanganRoutes}
+      {pembimbingLapanganAreaRoutes}
       {mahasiswaLaporanRoutes}
       {mahasiswaPenilaianRoutes}
       {publicInstansiRoutes}

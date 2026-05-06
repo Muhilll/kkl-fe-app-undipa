@@ -1,9 +1,9 @@
 import { Component, For, Show, createSignal, createEffect, createMemo } from "solid-js";
-import { useInstansiPenilaiForm } from "../hook/useInstansiPenilaiForm";
-import type { InstansiPenilaiFormProps } from "../type/instansi-penilai-props";
+import { usePembimbingLapanganForm } from "../hook/usePembimbingLapanganForm";
+import type { PembimbingLapanganFormProps } from "../type/pembimbing-lapangan-props";
 
-const InstansiPenilaiForm: Component<InstansiPenilaiFormProps> = (props) => {
-  const { formData, handleChange } = useInstansiPenilaiForm({
+const PembimbingLapanganForm: Component<PembimbingLapanganFormProps> = (props) => {
+  const { formData, handleChange } = usePembimbingLapanganForm({
     initialData: () => props.initialData,
   });
 
@@ -124,7 +124,7 @@ const InstansiPenilaiForm: Component<InstansiPenilaiFormProps> = (props) => {
       </Show>
 
       <div class="form-group">
-        <label for="nama">Nama PIC / Penilai</label>
+        <label for="nama">Nama PIC / Pembimbing Lapangan</label>
         <input
           id="nama"
           type="text"
@@ -187,15 +187,15 @@ const InstansiPenilaiForm: Component<InstansiPenilaiFormProps> = (props) => {
           onInput={(e) => handleChange("password", e.target.value)}
           placeholder={props.initialData ? "Tulis untuk mereset password" : "Buat password..."}
           disabled={props.isLoading}
-          required={!props.initialData} // Required on create, optional on update
+          required={!props.initialData}
         />
       </div>
 
       <button type="submit" class="btn-submit" disabled={props.isLoading} style={{ "grid-column": "1 / -1" }}>
-        {props.isLoading ? "Loading..." : props.initialData ? "Update Akun Penilai" : "Buat Akun Penilai"}
+        {props.isLoading ? "Loading..." : props.initialData ? "Update Pembimbing Lapangan" : "Buat Akun Pembimbing Lapangan"}
       </button>
     </form>
   );
 };
 
-export default InstansiPenilaiForm;
+export default PembimbingLapanganForm;

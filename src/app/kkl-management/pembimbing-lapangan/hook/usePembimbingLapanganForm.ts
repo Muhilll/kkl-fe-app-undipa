@@ -1,11 +1,11 @@
 import { createSignal, createEffect, Accessor } from "solid-js";
-import type { InstansiPenilai, CreateInstansiPenilaiInput } from "../type/instansi-penilai";
+import type { PembimbingLapangan, CreatePembimbingLapanganInput } from "../type/pembimbing-lapangan";
 
-interface UseInstansiPenilaiFormOptions {
-  initialData: Accessor<InstansiPenilai | undefined>;
+interface UsePembimbingLapanganFormOptions {
+  initialData: Accessor<PembimbingLapangan | undefined>;
 }
 
-const defaultFormData: CreateInstansiPenilaiInput = {
+const defaultFormData: CreatePembimbingLapanganInput = {
   kkl_klp_id: null,
   virtual_account: "",
   password: "",
@@ -13,8 +13,8 @@ const defaultFormData: CreateInstansiPenilaiInput = {
   jabatan: "",
 };
 
-export const useInstansiPenilaiForm = (options: UseInstansiPenilaiFormOptions) => {
-  const [formData, setFormData] = createSignal<CreateInstansiPenilaiInput>({ ...defaultFormData });
+export const usePembimbingLapanganForm = (options: UsePembimbingLapanganFormOptions) => {
+  const [formData, setFormData] = createSignal<CreatePembimbingLapanganInput>({ ...defaultFormData });
 
   createEffect(() => {
     const data = options.initialData();
@@ -31,7 +31,7 @@ export const useInstansiPenilaiForm = (options: UseInstansiPenilaiFormOptions) =
     }
   });
 
-  const handleChange = (field: keyof CreateInstansiPenilaiInput, value: any) => {
+  const handleChange = (field: keyof CreatePembimbingLapanganInput, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 

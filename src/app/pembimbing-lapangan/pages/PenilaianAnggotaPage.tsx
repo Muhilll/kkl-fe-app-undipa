@@ -4,13 +4,13 @@ import PageHeader from "../../../components/ui/PageHeader";
 import Toast from "../../../components/ui/Toast";
 import PenilaianForm from "../../kkl-management/penilaian/pages/Form";
 import { useAuth } from "../../../services/authStore";
-import { instansiPenilaiAPI } from "../../kkl-management/instansi-penilai/service/instansi-penilai.api";
+import { pembimbingLapanganAPI } from "../../kkl-management/pembimbing-lapangan/service/pembimbing-lapangan.api";
 import { instansiAPI } from "../../kkl-management/instansi/service/instansi.api";
 import { kklAgtAPI } from "../../kkl-management/kkl-agt/service/kkl-agt.api";
 import { kklKlpAPI } from "../../kkl-management/kkl-klp/service/kkl-klp.api";
 import { kklPeriodeAPI } from "../../kkl-management/kkl-periode/service/kkl-periode.api";
 import { penilaianApi } from "../../kkl-management/penilaian/service/penilaian.api";
-import type { InstansiPenilai } from "../../kkl-management/instansi-penilai/type/instansi-penilai";
+import type { PembimbingLapangan } from "../../kkl-management/pembimbing-lapangan/type/pembimbing-lapangan";
 import type { KklAgt } from "../../kkl-management/kkl-agt/type/kkl-agt";
 import type { KklKlp } from "../../kkl-management/kkl-klp/type/kkl-klp";
 import type { Penilaian } from "../../kkl-management/penilaian/type/penilaian";
@@ -23,7 +23,7 @@ const PenilaianAnggotaPembimbingPage: Component = () => {
   const navigate = useNavigate();
   const agtId = Number(params.agtId);
 
-  const [penilai, setPenilai] = createSignal<InstansiPenilai | null>(null);
+  const [penilai, setPenilai] = createSignal<PembimbingLapangan | null>(null);
   const [agt, setAgt] = createSignal<KklAgt | null>(null);
   const [kelompok, setKelompok] = createSignal<KklKlp | null>(null);
   const [penilaian, setPenilaian] = createSignal<Penilaian | null>(null);
@@ -50,7 +50,7 @@ const PenilaianAnggotaPembimbingPage: Component = () => {
 
     try {
       const [penilaiRes, instansiRes, periodeRes, klpRes, agtRes, penilaianRes] = await Promise.all([
-        instansiPenilaiAPI.getAll(),
+        pembimbingLapanganAPI.getAll(),
         instansiAPI.getAll(),
         kklPeriodeAPI.getAll(),
         kklKlpAPI.getAll(),
@@ -105,7 +105,7 @@ const PenilaianAnggotaPembimbingPage: Component = () => {
         penilaianRes.data?.find(
           (item) =>
             item.kkl_agt_id === agtId &&
-            item.instansi_penilai_id === currentPenilai.id,
+            item.pembimbing_id === currentPenilai.id,
         ) || null;
 
       setPenilaian(existingPenilaian);
@@ -130,7 +130,7 @@ const PenilaianAnggotaPembimbingPage: Component = () => {
       const cleanPayload = {
         ...payload,
         kkl_agt_id: agtId,
-        instansi_penilai_id: currentPenilai.id,
+        pembimbing_id: currentPenilai.id,
       };
       const existing = penilaian();
       const result = existing
@@ -206,7 +206,7 @@ const PenilaianAnggotaPembimbingPage: Component = () => {
             klps={kelompok() ? [kelompok()!] : []}
             periodes={periodes()}
             defaultKklAgtId={agtId}
-            defaultInstansiPenilaiId={penilai()?.id}
+            defaultPembimbingId={penilai()?.id}
             readOnly={!!penilaian() && !isEditing()}
             onSubmit={handleSubmit}
             isLoading={loading()}

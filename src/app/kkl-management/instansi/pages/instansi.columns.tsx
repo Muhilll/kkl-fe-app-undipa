@@ -62,7 +62,7 @@ export const createInstansiColumns = (
         {props.onManagePenilai && (
           <button
             class="btn-icon"
-            title="Kelola Akun Penilai"
+            title="Kelola Pembimbing Lapangan"
             onClick={() => props.onManagePenilai!(i.id)}
             style={{
               padding: "6px",

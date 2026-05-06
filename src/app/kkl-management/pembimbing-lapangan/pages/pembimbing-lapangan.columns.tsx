@@ -1,6 +1,6 @@
 import type { DataTableColumn } from "../../../../components/ui/DataTable";
-import type { InstansiPenilaiTableProps } from "../type/instansi-penilai-props";
-import type { InstansiPenilai } from "../type/instansi-penilai";
+import type { PembimbingLapanganTableProps } from "../type/pembimbing-lapangan-props";
+import type { PembimbingLapangan } from "../type/pembimbing-lapangan";
 
 const IconEdit = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -18,9 +18,9 @@ const IconTrash = () => (
   </svg>
 );
 
-export const createInstansiPenilaiColumns = (
-  props: Pick<InstansiPenilaiTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete" | "klps">,
-): DataTableColumn<InstansiPenilai>[] => [
+export const createPembimbingLapanganColumns = (
+  props: Pick<PembimbingLapanganTableProps, "onEdit" | "onDelete" | "canUpdate" | "canDelete" | "klps">,
+): DataTableColumn<PembimbingLapangan>[] => [
     { header: "No", cell: (_, index) => <>{index + 1}</>, sortValue: (p) => p.id },
     {
       header: "Virtual Account",

@@ -3,11 +3,11 @@ import { useNavigate } from "@solidjs/router";
 import PageHeader from "../../../components/ui/PageHeader";
 import Toast from "../../../components/ui/Toast";
 import { useAuth } from "../../../services/authStore";
-import { instansiPenilaiAPI } from "../../kkl-management/instansi-penilai/service/instansi-penilai.api";
+import { pembimbingLapanganAPI } from "../../kkl-management/pembimbing-lapangan/service/pembimbing-lapangan.api";
 import { kklAgtAPI } from "../../kkl-management/kkl-agt/service/kkl-agt.api";
 import { kklKlpAPI } from "../../kkl-management/kkl-klp/service/kkl-klp.api";
 import { kklPeriodeAPI } from "../../kkl-management/kkl-periode/service/kkl-periode.api";
-import type { InstansiPenilai } from "../../kkl-management/instansi-penilai/type/instansi-penilai";
+import type { PembimbingLapangan } from "../../kkl-management/pembimbing-lapangan/type/pembimbing-lapangan";
 import type { KklAgt } from "../../kkl-management/kkl-agt/type/kkl-agt";
 import type { KklKlp } from "../../kkl-management/kkl-klp/type/kkl-klp";
 import type { KklPeriode } from "../../kkl-management/kkl-periode/type/kkl-periode";
@@ -24,7 +24,7 @@ const AnggotaKelompokPembimbingPage: Component = () => {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  const [penilai, setPenilai] = createSignal<InstansiPenilai | null>(null);
+  const [penilai, setPenilai] = createSignal<PembimbingLapangan | null>(null);
   const [activePeriode, setActivePeriode] = createSignal<KklPeriode | null>(null);
   const [kelompok, setKelompok] = createSignal<KklKlp | null>(null);
   const [anggota, setAnggota] = createSignal<KklAgt[]>([]);
@@ -48,7 +48,7 @@ const AnggotaKelompokPembimbingPage: Component = () => {
 
     try {
       const [penilaiRes, periodeRes, klpRes, agtRes] = await Promise.all([
-        instansiPenilaiAPI.getAll(),
+        pembimbingLapanganAPI.getAll(),
         kklPeriodeAPI.getAll(),
         kklKlpAPI.getAll(),
         kklAgtAPI.getAll(),

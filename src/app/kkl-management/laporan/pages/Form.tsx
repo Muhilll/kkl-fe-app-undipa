@@ -60,6 +60,31 @@ const LaporanForm: Component<LaporanFormProps> = (props) => {
   const [selectedPeriodeId, setSelectedPeriodeId] = createSignal<string>("");
   const [selectedKlpId, setSelectedKlpId] = createSignal<string>("");
 
+  const [jamMulai, setJamMulai] = createSignal("");
+  const [jamSelesai, setJamSelesai] = createSignal("");
+
+  createEffect(() => {
+    const jam = props.initialData?.jam;
+    if (jam && jam.includes("-")) {
+      const parts = jam.split("-");
+      setJamMulai(parts[0] || "");
+      setJamSelesai(parts[1] || "");
+    } else {
+      setJamMulai("");
+      setJamSelesai("");
+    }
+  });
+
+  const handleJamChange = (type: "mulai" | "selesai", val: string) => {
+    if (type === "mulai") {
+      setJamMulai(val);
+      handleChange("jam", `${val}-${jamSelesai()}`);
+    } else {
+      setJamSelesai(val);
+      handleChange("jam", `${jamMulai()}-${val}`);
+    }
+  };
+
   createEffect(() => {
     if (props.initialData || props.defaultKklAgtId) {
       const targetAgtId = props.initialData?.kkl_agt_id || props.defaultKklAgtId;
@@ -271,16 +296,30 @@ const LaporanForm: Component<LaporanFormProps> = (props) => {
       </div>
 
       <div class="form-group">
-        <label for="jam">Jam</label>
-        <input
-          id="jam"
-          type="time"
-          class="form-input"
-          value={formData().jam}
-          onInput={(e) => handleChange("jam", e.target.value)}
-          disabled={props.isLoading}
-          required
-        />
+        <label>Jam Pelaksanaan</label>
+        <div style={{ display: "flex", gap: "10px", "align-items": "center" }}>
+          <input
+            id="jam_mulai"
+            type="time"
+            class="form-input"
+            value={jamMulai()}
+            onInput={(e) => handleJamChange("mulai", e.target.value)}
+            disabled={props.isLoading}
+            required
+            style={{ flex: 1 }}
+          />
+          <span style={{ "font-weight": "bold", color: "var(--gray-500)" }}>-</span>
+          <input
+            id="jam_selesai"
+            type="time"
+            class="form-input"
+            value={jamSelesai()}
+            onInput={(e) => handleJamChange("selesai", e.target.value)}
+            disabled={props.isLoading}
+            required
+            style={{ flex: 1 }}
+          />
+        </div>
       </div>
 
       <div class="form-group" style={{ "grid-column": "1 / -1" }}>

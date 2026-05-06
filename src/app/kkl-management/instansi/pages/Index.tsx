@@ -120,7 +120,7 @@ const InstansiPage: Component = () => {
         canDelete={permissions.canDelete()}
         onEdit={instansiManagement.handleEdit}
         onDelete={instansiManagement.requestDelete}
-        onManagePenilai={(id) => navigate(`/kkl-management/instansis/${id}/penilais`)}
+        onManagePenilai={(id) => navigate(`/kkl-management/instansis/${id}/pembimbing-lapangans`)}
       />
     </div>
   );
