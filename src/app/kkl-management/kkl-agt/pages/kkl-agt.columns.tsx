@@ -50,13 +50,14 @@ export const createKklAgtColumns = (
       </div>,
       sortValue: (p) => `${p.mahasiswa?.nama || ""} ${p.mahasiswa?.nim || ""}`
     },
+    { header: "Nama Kelompok", cell: (p) => <>{p.kkl_klp?.nama || "-"}</>, sortValue: (p) => p.kkl_klp?.nama || "" },
     { header: "Periode KKL", cell: (p) => <>{p.kkl_klp?.kkl_periode?.semester} - {p.kkl_klp?.kkl_periode?.tahun}</>, sortValue: (p) => `${p.kkl_klp?.kkl_periode?.semester || ""} ${p.kkl_klp?.kkl_periode?.tahun || ""}` },
     { header: "Instansi Tujuan", cell: (p) => <>{p.kkl_klp?.instansi?.nama}</>, sortValue: (p) => p.kkl_klp?.instansi?.nama || "" },
     {
       header: "Dosen Pembimbing", cell: (p) => <div style={{ display: "flex", "flex-direction": "column", gap: "2px" }}>
         <span style={{ "font-weight": "500" }}>{p.kkl_klp?.dosen?.nama || "-"}</span>
         <span style={{ "font-size": "12px", color: "var(--gray-500)" }}>
-          NIP: {p.kkl_klp?.dosen?.nidn || "-"}
+          NIDN: {p.kkl_klp?.dosen?.nidn || "-"}
         </span>
       </div>,
       sortValue: (p) => `${p.kkl_klp?.dosen?.nama || ""} ${p.kkl_klp?.dosen?.nidn || ""}`

@@ -161,27 +161,20 @@ const InstansiPenilaiForm: Component<InstansiPenilaiFormProps> = (props) => {
             value={formData().virtual_account}
             onInput={(e) => handleChange("virtual_account", e.target.value)}
             placeholder="Contoh: VA-12345"
-            disabled={props.isLoading || !!props.initialData}
+            disabled={props.isLoading}
             required
             style={{ flex: 1 }}
           />
-          <Show when={!props.initialData}>
-            <button
-              type="button"
-              onClick={handleGenerateVA}
-              disabled={props.isLoading}
-              class="btn-secondary"
-              style={{ padding: "0 12px", "white-space": "nowrap" }}
-            >
-              Generate
-            </button>
-          </Show>
+          <button
+            type="button"
+            onClick={handleGenerateVA}
+            disabled={props.isLoading}
+            class="btn-secondary"
+            style={{ padding: "0 12px", "white-space": "nowrap" }}
+          >
+            Generate
+          </button>
         </div>
-        <Show when={props.initialData}>
-          <small style={{ color: "var(--gray-500)", "margin-top": "4px", display: "block" }}>
-            Virtual Account tidak bisa diubah.
-          </small>
-        </Show>
       </div>
 
       <div class="form-group">

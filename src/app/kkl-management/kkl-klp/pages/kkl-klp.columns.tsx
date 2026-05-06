@@ -62,8 +62,15 @@ export const createKklKlpColumns = (
     { header: "Nama Kelompok", cell: (p) => <>{p.nama}</>, sortValue: (p) => p.nama },
     { header: "Periode", cell: (p) => <>{p.kkl_periode?.semester} ({p.kkl_periode?.tahun})</>, sortValue: (p) => `${p.kkl_periode?.nama || ""} ${p.kkl_periode?.tahun || ""}` },
     { header: "Instansi", cell: (p) => <>{p.instansi?.nama}</>, sortValue: (p) => p.instansi?.nama || "" },
-    { header: "Dosen Pembimbing", cell: (p) => <>{p.dosen?.nama} - {p.dosen?.nidn}</>, sortValue: (p) => `${p.dosen?.nama || ""} ${p.dosen?.nidn || ""}` },
     {
+      header: "Dosen Pembimbing", cell: (p) => <div style={{ display: "flex", "flex-direction": "column", gap: "2px" }}>
+        <span style={{ "font-weight": "500" }}>{p?.dosen?.nama || "-"}</span>
+        <span style={{ "font-size": "12px", color: "var(--gray-500)" }}>
+          NIDN: {p?.dosen?.nidn || "-"}
+        </span>
+      </div>,
+      sortValue: (p) => `${p?.dosen?.nama || ""} ${p?.dosen?.nidn || ""}`
+    }, {
       header: "Actions",
       sortable: false,
       headerStyle: { "text-align": "right" },
