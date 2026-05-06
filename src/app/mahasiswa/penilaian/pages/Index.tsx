@@ -101,6 +101,8 @@ const MahasiswaPenilaianPage: Component = () => {
     return `${periode.nama} (${periode.tahun} - ${periode.semester})`;
   });
 
+  const instansi = createMemo(() => agts()[0]?.kkl_klp?.instansi);
+
   const firstPenilaian = createMemo(() => penilaians()[0] || null);
 
   return (
@@ -115,19 +117,60 @@ const MahasiswaPenilaianPage: Component = () => {
       </Show>
 
       <div class="form-section">
-        <h3 style={{ "margin-top": 0, "margin-bottom": "15px", "border-bottom": "1px solid var(--gray-200)", "padding-bottom": "10px" }}>
-          Informasi Mahasiswa
-        </h3>
-        <Show when={!loading()} fallback={<p style={{ color: "var(--gray-500)" }}>Loading info...</p>}>
-          <p style={{ margin: "0 0 10px 0" }}>
-            <strong>Mahasiswa:</strong><br />
-            {mahasiswa()?.nama || "-"} ({mahasiswa()?.nim || "-"})
-          </p>
-          <p style={{ margin: "0" }}>
-            <strong>Periode/Kelompok:</strong><br />
-            {periodeLabel()}
-          </p>
-        </Show>
+        <div style={{ display: "grid", "grid-template-columns": "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px" }}>
+          <div>
+            <h3 style={{ "margin-top": 0, "margin-bottom": "15px", "border-bottom": "1px solid var(--gray-200)", "padding-bottom": "10px" }}>
+              Informasi Mahasiswa
+            </h3>
+            <Show when={!loading()} fallback={<p style={{ color: "var(--gray-500)" }}>Loading info...</p>}>
+              <p style={{ margin: "0 0 10px 0" }}>
+                <strong>Mahasiswa:</strong><br />
+                {mahasiswa()?.nama || "-"} ({mahasiswa()?.nim || "-"})
+              </p>
+              <p style={{ margin: "0" }}>
+                <strong>Periode/Kelompok:</strong><br />
+                {periodeLabel()}
+              </p>
+            </Show>
+          </div>
+
+          <div>
+            <h3 style={{ "margin-top": 0, "margin-bottom": "15px", "border-bottom": "1px solid var(--gray-200)", "padding-bottom": "10px" }}>
+              Tempat KKL (Instansi)
+            </h3>
+            <Show when={!loading()} fallback={<p style={{ color: "var(--gray-500)" }}>Loading info...</p>}>
+              <Show when={instansi()} fallback={<p style={{ color: "var(--gray-500)", margin: "0" }}>Belum ada instansi KKL</p>}>
+                <p style={{ margin: "0 0 10px 0" }}>
+                  <strong>Nama Instansi:</strong><br />
+                  {instansi()?.nama || "-"}
+                </p>
+                <p style={{ margin: "0 0 10px 0" }}>
+                  <strong>Alamat:</strong><br />
+                  {instansi()?.alamat || "-"}
+                </p>
+                <p style={{ margin: "0 0 10px 0" }}>
+                  <strong>No. Telepon:</strong><br />
+                  {instansi()?.telp || "-"}
+                </p>
+                <Show when={instansi()?.latitude && instansi()?.longitude}>
+                  <a
+                    href={`https://www.google.com/maps?q=${instansi()?.latitude},${instansi()?.longitude}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-primary"
+                    style={{ display: "inline-flex", "align-items": "center", gap: "6px", "text-decoration": "none", "font-size": "13px", padding: "6px 12px" }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Lihat Lokasi
+                  </a>
+                </Show>
+              </Show>
+            </Show>
+          </div>
+        </div>
       </div>
 
       <Show when={loading()}>

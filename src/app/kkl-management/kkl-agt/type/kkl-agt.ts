@@ -7,7 +7,7 @@ export interface KklAgt {
     id: number;
     nama?: string;
     kkl_periode?: { id: number; nama: string; tahun: string; semester: string };
-    instansi?: { id: number; nama: string };
+    instansi?: { id: number; nama: string; latitude?: number; longitude?: number; alamat?: string; telp?: string };
     dosen?: { id: number; nidn: string; nama: string };
   };
   created_at?: string;
