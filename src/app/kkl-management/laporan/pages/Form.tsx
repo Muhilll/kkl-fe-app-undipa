@@ -31,6 +31,7 @@ const LaporanForm: Component<LaporanFormProps> = (props) => {
         currentData = {
           ...currentData,
           file: asset.secureUrl, // File URL dari Cloudinary
+          file_public_id: asset.publicId, // Cloudinary Public ID
         };
         setFormData(currentData);
       } catch (err) {

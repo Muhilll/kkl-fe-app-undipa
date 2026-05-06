@@ -5,6 +5,7 @@ export type Laporan = {
   jam: string;
   aktifitas: string;
   file: string | null;
+  file_public_id: string | null;
   latitude: string | null;
   longitude: string | null;
   jarak: string | null;
@@ -24,6 +25,7 @@ export type CreateLaporanInput = {
   jam: string;
   aktifitas: string;
   file?: string | null;
+  file_public_id?: string | null;
   latitude?: string | null;
   longitude?: string | null;
   jarak?: string | null;
