@@ -26,6 +26,7 @@ import { mahasiswaLaporanRoutes } from '../app/mahasiswa/laporan/route';
 import { mahasiswaPenilaianRoutes } from '../app/mahasiswa/penilaian/route';
 import { publicInstansiRoutes } from '../app/instansi/route';
 import { surveyRoutes } from '../app/surveys/route';
+import { susKklAppRoutes } from '../app/sus-kkl-app/route';
 
 import Layout from '../components/layout/Index';
 import { ParentComponent } from 'solid-js';
@@ -72,6 +73,7 @@ export const routeConfig = (
       {mahasiswaPenilaianRoutes}
       {publicInstansiRoutes}
       {surveyRoutes}
+      {susKklAppRoutes}
     </Route>
   </>
 );

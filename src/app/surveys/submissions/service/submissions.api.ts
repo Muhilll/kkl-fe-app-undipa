@@ -29,6 +29,10 @@ export const submissionsAPI = {
     api.get<Submission>(`/surveys/submissions/${id}`),
   create: (data: CreateSubmissionInput) =>
     api.post<any>("/surveys/submissions", data),
+  createBatch: (data: {
+    mahasiswa_id: number;
+    answers: { question_id: number; score: number }[];
+  }) => api.post<any>("/surveys/submissions/batch", data),
   update: (id: string | number, data: UpdateSubmissionInput) =>
     api.put<any>(`/surveys/submissions/${id}`, data),
   delete: (id: string | number) =>
