@@ -157,9 +157,6 @@ const SusKklAppPage: Component = () => {
                 sus.selectedQuestionnaire()?.name || "Kuesioner Evaluasi Usability"
               }
               submissions={sus.submissions()}
-              susScoreData={sus.susScoreData()}
-              onReset={sus.handleResetEvaluation}
-              isSubmitting={sus.isSubmitting()}
             />
           </Show>
         </Show>
