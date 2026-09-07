@@ -34,7 +34,7 @@ const SusKklAppPage: Component = () => {
               class="form-select"
               value={sus.selectedQuestionnaireId()}
               onChange={(e) =>
-                sus.setSelectedQuestionnaireId(e.currentTarget.value)
+                sus.handleSelectQuestionnaire(e.currentTarget.value)
               }
             >
               <For each={sus.questionnaires()}>

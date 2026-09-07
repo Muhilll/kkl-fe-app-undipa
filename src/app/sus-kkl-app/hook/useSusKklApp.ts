@@ -1,14 +1,12 @@
-import { createEffect, createMemo, createSignal, onMount } from "solid-js";
+import { createMemo, createSignal, onMount } from "solid-js";
 import { useAuth } from "../../../services/authStore";
 import { susAPI } from "../service/sus.api";
-import { calculateSusScore } from "../utils/susCalculator";
 import type { Question } from "../../surveys/questions/type/questions";
 import type {
   MahasiswaQuestionnaireAnswer,
   Questionnaire,
 } from "../../surveys/questionnaire/type/questionnaire";
 import type { Mahasiswa } from "../../master-data/mahasiswa/type/mahasiswa";
-import type { SusScoreCalculation } from "../type/sus";
 
 export function useSusKklApp() {
   const auth = useAuth();
@@ -24,8 +22,6 @@ export function useSusKklApp() {
   const [submissions, setSubmissions] = createSignal<
     MahasiswaQuestionnaireAnswer[]
   >([]);
-  const [susScoreData, setSusScoreData] =
-    createSignal<SusScoreCalculation | null>(null);
 
   const [userAnswers, setUserAnswers] = createSignal<Record<number, number>>(
     {},
@@ -68,7 +64,7 @@ export function useSusKklApp() {
     return Math.round((answeredCount() / totalQuestionsCount()) * 100);
   });
 
-  // Initial load
+  // Initial unified load
   onMount(async () => {
     await initData();
   });
@@ -78,6 +74,7 @@ export function useSusKklApp() {
     setError("");
 
     try {
+      // 1. Fetch questionnaires and all mahasiswas in parallel
       const [qnRes, mhsRes] = await Promise.all([
         susAPI.getQuestionnaires(),
         susAPI.getAllMahasiswas(),
@@ -85,10 +82,9 @@ export function useSusKklApp() {
 
       const qnList = qnRes.data || [];
       const mhsList = mhsRes.data || [];
-
       setQuestionnaires(qnList);
 
-      // Find current mahasiswa based on authenticated user
+      // 2. Find current mahasiswa based on authenticated user
       const user = auth.user();
       let matchedMhs: Mahasiswa | null = null;
       if (user) {
@@ -99,10 +95,9 @@ export function useSusKklApp() {
               m.nim === user.username,
           ) || null;
       }
-      // Matched student record from logged-in user
       setCurrentMahasiswa(matchedMhs);
 
-      // Automatically select questionnaire matching 'usability' or 'sus' or default to first
+      // 3. Automatically select questionnaire matching 'usability' or 'sus' or default to first
       const defaultQn =
         qnList.find(
           (q) =>
@@ -111,33 +106,25 @@ export function useSusKklApp() {
         ) || qnList[0];
 
       if (defaultQn) {
-        setSelectedQuestionnaireId(String(defaultQn.id));
+        const qnId = String(defaultQn.id);
+        setSelectedQuestionnaireId(qnId);
+        // Load questions and submissions in the SAME initial loading step
+        await loadQuestionnaireData(qnId, matchedMhs ? matchedMhs.id : null);
       }
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Gagal memuat data awal survei.",
+        err instanceof Error ? err.message : "Gagal memuat data awal kuesioner.",
       );
     } finally {
+      // Only release loading state when questionnaires, questions, AND submissions are fully ready
       setIsLoading(false);
     }
   };
 
-  // Re-check questionnaire questions & submissions whenever questionnaire or currentMahasiswa changes
-  createEffect(() => {
-    const qnId = selectedQuestionnaireId();
-    const mhs = activeMahasiswa();
-
-    if (qnId) {
-      checkSubmissionStatus(qnId, mhs ? mhs.id : null);
-    }
-  });
-
-  const checkSubmissionStatus = async (
+  const loadQuestionnaireData = async (
     qnId: string,
     mahasiswaId: number | null,
   ) => {
-    setIsLoading(true);
-
     try {
       // 1. Fetch questions for this questionnaire
       const qRes = await susAPI.getQuestions(qnId);
@@ -152,25 +139,29 @@ export function useSusKklApp() {
 
         if (subList.length > 0) {
           setHasSubmitted(true);
-          // Calculate SUS Score
-          const scoreCalc = calculateSusScore(subList);
-          setSusScoreData(scoreCalc);
         } else {
           setHasSubmitted(false);
-          setSusScoreData(null);
           setUserAnswers({});
         }
       } else {
         setHasSubmitted(false);
         setSubmissions([]);
-        setSusScoreData(null);
       }
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Gagal memeriksa status evaluasi mahasiswa.",
+          : "Gagal memeriksa status kuesioner mahasiswa.",
       );
+    }
+  };
+
+  const handleSelectQuestionnaire = async (qnId: string) => {
+    setSelectedQuestionnaireId(qnId);
+    setIsLoading(true);
+    try {
+      const mhs = activeMahasiswa();
+      await loadQuestionnaireData(qnId, mhs ? mhs.id : null);
     } finally {
       setIsLoading(false);
     }
@@ -217,7 +208,7 @@ export function useSusKklApp() {
           type: "success",
         });
         // Refresh submission status
-        await checkSubmissionStatus(selectedQuestionnaireId(), mhs.id);
+        await loadQuestionnaireData(selectedQuestionnaireId(), mhs.id);
       } else {
         setToast({
           message: res.error || "Gagal mengirimkan jawaban evaluasi.",
@@ -237,48 +228,17 @@ export function useSusKklApp() {
     }
   };
 
-  const handleResetEvaluation = async () => {
-    const mhs = activeMahasiswa();
-    const qnId = selectedQuestionnaireId();
-    if (!mhs || !qnId) return;
-
-    setIsSubmitting(true);
-    try {
-      const res = await susAPI.resetStudentSubmissions(qnId, mhs.id);
-      if (res.success) {
-        setToast({
-          message:
-            "Pengisian kuesioner direset. Anda dapat mengisi kembali.",
-          type: "success",
-        });
-        await checkSubmissionStatus(qnId, mhs.id);
-      } else {
-        setToast({
-          message: res.error || "Gagal mereset jawaban kuesioner.",
-          type: "error",
-        });
-      }
-    } catch (err) {
-      setToast({
-        message: "Terjadi kesalahan saat mereset kuesioner.",
-        type: "error",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return {
     questionnaires,
     selectedQuestionnaireId,
     setSelectedQuestionnaireId,
+    handleSelectQuestionnaire,
     selectedQuestionnaire,
     questions,
     currentMahasiswa,
     activeMahasiswa,
     hasSubmitted,
     submissions,
-    susScoreData,
     userAnswers,
     handleSelectAnswer,
     answeredCount,
@@ -291,6 +251,5 @@ export function useSusKklApp() {
     toast,
     clearToast,
     handleSubmitEvaluation,
-    handleResetEvaluation,
   };
 }
