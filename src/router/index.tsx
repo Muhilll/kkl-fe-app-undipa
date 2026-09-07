@@ -25,6 +25,7 @@ import { pembimbingLapanganAreaRoutes } from '../app/pembimbing-lapangan/route';
 import { mahasiswaLaporanRoutes } from '../app/mahasiswa/laporan/route';
 import { mahasiswaPenilaianRoutes } from '../app/mahasiswa/penilaian/route';
 import { publicInstansiRoutes } from '../app/instansi/route';
+import { surveyRoutes } from '../app/surveys/route';
 
 import Layout from '../components/layout/Index';
 import { ParentComponent } from 'solid-js';
@@ -70,6 +71,7 @@ export const routeConfig = (
       {mahasiswaLaporanRoutes}
       {mahasiswaPenilaianRoutes}
       {publicInstansiRoutes}
+      {surveyRoutes}
     </Route>
   </>
 );
