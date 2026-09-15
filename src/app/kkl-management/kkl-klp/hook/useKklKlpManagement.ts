@@ -58,6 +58,10 @@ export const useKklKlpManagement = () => {
     navigate(`/kkl-management/kkl-klps/${klp.id}/anggota`);
   };
 
+  const handleManageLaporan = (klp: KklKlp) => {
+    navigate(`/kkl-management/kkl-klps/${klp.id}/laporan`);
+  };
+
   const openCreateForm = () => {
     setShowForm(true);
     setEditingKlp(null);
@@ -93,6 +97,7 @@ export const useKklKlpManagement = () => {
     handleSubmit: submitKlp,
     handleEdit,
     handleManageAnggota,
+    handleManageLaporan,
     openCreateForm,
     closeForm,
     requestDelete,

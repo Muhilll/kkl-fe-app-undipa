@@ -123,6 +123,7 @@ const KklKlpPage: Component = () => {
         onEdit={klpManagement.handleEdit}
         onDelete={klpManagement.requestDelete}
         onManageAnggota={klpManagement.handleManageAnggota}
+        onManageLaporan={klpManagement.handleManageLaporan}
       />
     </div>
   );

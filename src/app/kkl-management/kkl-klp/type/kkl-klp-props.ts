@@ -8,6 +8,7 @@ export interface KklKlpTableProps {
   onEdit: (klp: KklKlp) => void;
   onDelete: (id: string) => void;
   onManageAnggota: (klp: KklKlp) => void;
+  onManageLaporan?: (klp: KklKlp) => void;
 }
 
 export interface KklKlpFormProps {

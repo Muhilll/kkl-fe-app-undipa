@@ -2,6 +2,7 @@ import { Route } from "@solidjs/router";
 import ProtectedPage from "../../../router/ProtectedRoute";
 import KklKlpPage from "./pages/Index";
 import ManageAnggotaPage from "./pages/ManageAnggotaPage";
+import ManageLaporanKelompokPage from "./pages/ManageLaporanKelompokPage";
 import ManageLaporanAnggotaPage from "./pages/ManageLaporanAnggotaPage";
 import ManagePenilaianAnggotaPage from "./pages/ManagePenilaianAnggotaPage";
 
@@ -20,6 +21,14 @@ export const kklKlpRoutes = (
       component={() => (
         <ProtectedPage>
           <ManageAnggotaPage />
+        </ProtectedPage>
+      )}
+    />
+    <Route
+      path="/kkl-management/kkl-klps/:id/laporan"
+      component={() => (
+        <ProtectedPage>
+          <ManageLaporanKelompokPage />
         </ProtectedPage>
       )}
     />
