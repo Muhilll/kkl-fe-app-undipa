@@ -15,6 +15,40 @@ export function formatDate(date: Date | string, locale = 'en-US'): string {
 }
 
 /**
+ * Format tanggal Indonesia dari format ISO string (contoh: 2026-09-01T00:00:00.000Z -> 1 September 2026)
+ */
+export function formatTanggal(dateStr: string | Date | null | undefined): string {
+  if (!dateStr) return "-";
+  const str =
+    dateStr instanceof Date
+      ? dateStr.toISOString().split("T")[0]
+      : String(dateStr).split("T")[0];
+  const parts = str.split("-");
+  if (parts.length === 3) {
+    const [year, month, day] = parts;
+    const months = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember",
+    ];
+    const monthIndex = parseInt(month, 10) - 1;
+    if (monthIndex >= 0 && monthIndex < 12) {
+      return `${parseInt(day, 10)} ${months[monthIndex]} ${year}`;
+    }
+  }
+  return String(dateStr);
+}
+
+/**
  * Check if a string is empty or whitespace only
  * @param str - String to check
  * @returns True if string is empty or whitespace only

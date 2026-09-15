@@ -5,6 +5,7 @@ import LaporanTable from "../../kkl-management/laporan/pages/Table";
 import { useAuth } from "../../../services/authStore";
 import { usePagePermissions } from "../../../hooks/usePagePermissions";
 import { printTableToPdf } from "../../../utils/printTableToPdf";
+import { formatTanggal } from "../../../utils/helpers";
 import { dosenAPI } from "../../master-data/dosen/service/dosen.api";
 import { kklAgtAPI } from "../../kkl-management/kkl-agt/service/kkl-agt.api";
 import { kklKlpAPI } from "../../kkl-management/kkl-klp/service/kkl-klp.api";
@@ -126,7 +127,7 @@ const LaporanAnggotaPage: Component = () => {
         String(i + 1),
         p.mahasiswa?.nama || agt()?.mahasiswa?.nama || "-",
         p.mahasiswa?.nim || agt()?.mahasiswa?.nim || "-",
-        p.tanggal,
+        formatTanggal(p.tanggal),
         p.jam,
         p.aktifitas,
         p.jarak ? `${p.jarak} m` : "-",

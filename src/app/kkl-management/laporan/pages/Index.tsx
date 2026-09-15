@@ -5,6 +5,7 @@ import PageHeader from "../../../../components/ui/PageHeader";
 import Toast from "../../../../components/ui/Toast";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
 import { printTableToPdf } from "../../../../utils/printTableToPdf";
+import { formatTanggal } from "../../../../utils/helpers";
 import { useLaporanManagement } from "../hook/useLaporanManagement";
 import LaporanForm from "./Form";
 import LaporanTable from "./Table";
@@ -52,7 +53,7 @@ const LaporanPage: Component = () => {
                 title: "Data Laporan KKL",
                 subtitle: "Daftar laporan kegiatan KKL mahasiswa.",
                 headers: ["No", "Mahasiswa", "NIM", "Tanggal", "Jam", "Aktifitas", "Jarak", "Status"],
-                rows: laporanManagement.laporans().map((p, i) => [String(i + 1), p.mahasiswa?.nama || "-", p.mahasiswa?.nim || "-", p.tanggal, p.jam, p.aktifitas, p.jarak ? `${p.jarak} m` : "-", p.status]),
+                rows: laporanManagement.laporans().map((p, i) => [String(i + 1), p.mahasiswa?.nama || "-", p.mahasiswa?.nim || "-", formatTanggal(p.tanggal), p.jam, p.aktifitas, p.jarak ? `${p.jarak} m` : "-", p.status]),
               })}>
                 <IconPrinter />
                 Cetak Data

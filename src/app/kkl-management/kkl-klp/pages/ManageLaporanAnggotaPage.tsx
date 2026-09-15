@@ -8,6 +8,7 @@ import LaporanForm from "../../laporan/pages/Form";
 import LaporanTable from "../../laporan/pages/Table";
 import { usePagePermissions } from "../../../../hooks/usePagePermissions";
 import { printTableToPdf } from "../../../../utils/printTableToPdf";
+import { formatTanggal } from "../../../../utils/helpers";
 import { laporanAPI } from "../../laporan/service/laporan.api";
 import { kklAgtAPI } from "../../kkl-agt/service/kkl-agt.api";
 import { instansiAPI } from "../../instansi/service/instansi.api";
@@ -118,7 +119,7 @@ const ManageLaporanAnggotaPage: Component = () => {
         String(i + 1),
         p.mahasiswa?.nama || agt()?.mahasiswa?.nama || "-",
         p.mahasiswa?.nim || agt()?.mahasiswa?.nim || "-",
-        p.tanggal,
+        formatTanggal(p.tanggal),
         p.jam,
         p.aktifitas,
         p.jarak ? `${p.jarak} m` : "-",

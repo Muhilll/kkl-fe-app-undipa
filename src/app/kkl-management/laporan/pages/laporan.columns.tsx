@@ -1,6 +1,7 @@
 import type { DataTableColumn } from "../../../../components/ui/DataTable";
 import type { LaporanTableProps } from "../type/laporan-props";
 import type { Laporan } from "../type/laporan";
+import { formatTanggal } from "../../../../utils/helpers";
 
 const IconEdit = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -38,7 +39,7 @@ export const createLaporanColumns = (
       </div>,
       sortValue: (p) => `${p.mahasiswa?.nama || ""} ${p.mahasiswa?.nim || ""}`
     },
-    { header: "Tanggal", cell: (p) => <>{p.tanggal}</>, sortValue: (p) => p.tanggal },
+    { header: "Tanggal", cell: (p) => <>{formatTanggal(p.tanggal)}</>, sortValue: (p) => p.tanggal },
     { header: "Jam", cell: (p) => <>{p.jam}</>, sortValue: (p) => p.jam },
     { header: "Aktifitas", cell: (p) => <>{p.aktifitas.length > 50 ? p.aktifitas.substring(0, 50) + "..." : p.aktifitas}</>, sortValue: (p) => p.aktifitas },
     {
