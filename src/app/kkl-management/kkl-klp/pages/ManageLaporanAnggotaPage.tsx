@@ -6,6 +6,8 @@ import ConfirmModal from "../../../../components/ui/ConfirmModal";
 import Modal from "../../../../components/ui/Modal";
 import LaporanForm from "../../laporan/pages/Form";
 import LaporanTable from "../../laporan/pages/Table";
+import { usePagePermissions } from "../../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../../utils/printTableToPdf";
 import { laporanAPI } from "../../laporan/service/laporan.api";
 import { kklAgtAPI } from "../../kkl-agt/service/kkl-agt.api";
 import { instansiAPI } from "../../instansi/service/instansi.api";
@@ -22,9 +24,27 @@ const IconPlusCircle = () => (
   </svg>
 );
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const ManageLaporanAnggotaPage: Component = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const permissions = usePagePermissions();
   const agtId = Number(params.agtId);
   const klpId = Number(params.id);
 
@@ -76,6 +96,36 @@ const ManageLaporanAnggotaPage: Component = () => {
   };
 
   onMount(fetchData);
+
+  const handlePrint = () => {
+    const studentName = agt()?.mahasiswa?.nama || "Mahasiswa";
+    const studentNim = agt()?.mahasiswa?.nim || "-";
+
+    printTableToPdf({
+      title: `Data Laporan Kegiatan KKL - ${studentName}`,
+      subtitle: `NIM: ${studentNim} | Total: ${laporans().length} Laporan Kegiatan`,
+      headers: [
+        "No",
+        "Mahasiswa",
+        "NIM",
+        "Tanggal",
+        "Jam",
+        "Aktifitas",
+        "Jarak",
+        "Status",
+      ],
+      rows: laporans().map((p, i) => [
+        String(i + 1),
+        p.mahasiswa?.nama || agt()?.mahasiswa?.nama || "-",
+        p.mahasiswa?.nim || agt()?.mahasiswa?.nim || "-",
+        p.tanggal,
+        p.jam,
+        p.aktifitas,
+        p.jarak ? `${p.jarak} m` : "-",
+        p.status,
+      ]),
+    });
+  };
 
   const submitLaporan = async (data: CreateLaporanInput | UpdateLaporanInput) => {
     setIsLoading(true);
@@ -162,10 +212,25 @@ const ManageLaporanAnggotaPage: Component = () => {
         title={agt() ? `Laporan: ${agt()?.mahasiswa?.nama}` : "Manajemen Laporan Anggota"}
         description={agt() ? `Kelola laporan kegiatan KKL untuk ${agt()?.mahasiswa?.nama} (${agt()?.mahasiswa?.nim}).` : "Loading..."}
         action={
-          <button class="btn-create" onClick={openCreateForm}>
-            <IconPlusCircle />
-            Add New Laporan
-          </button>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Show when={permissions.canReport()}>
+              <button
+                class="btn-secondary"
+                onClick={handlePrint}
+                disabled={isLoading() || laporans().length === 0}
+                title="Cetak laporan kegiatan anggota kelompok"
+              >
+                <IconPrinter />
+                Cetak Data
+              </button>
+            </Show>
+            <Show when={permissions.canCreate()}>
+              <button class="btn-create" onClick={openCreateForm}>
+                <IconPlusCircle />
+                Add New Laporan
+              </button>
+            </Show>
+          </div>
         }
       />
 
@@ -205,8 +270,8 @@ const ManageLaporanAnggotaPage: Component = () => {
       <LaporanTable
         laporans={laporans()}
         isLoading={isLoading()}
-        canUpdate={true}
-        canDelete={true}
+        canUpdate={permissions.canUpdate()}
+        canDelete={permissions.canDelete()}
         onEdit={handleEdit}
         onDelete={requestDelete}
       />

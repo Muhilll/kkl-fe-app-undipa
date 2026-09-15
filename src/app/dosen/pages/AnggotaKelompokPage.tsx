@@ -106,7 +106,7 @@ const AnggotaKelompokPage: Component = () => {
       <div style={{ display: "grid", "grid-template-columns": "1fr 2fr", gap: "20px" }}>
         <div class="form-section">
           <h3 style={{ "margin-top": 0, "margin-bottom": "15px", "border-bottom": "1px solid var(--gray-200)", "padding-bottom": "10px" }}>
-            Informasi Kelompok
+            Informasi Kelompokkk
           </h3>
           <Show when={!loading()} fallback={<p style={{ color: "var(--gray-500)" }}>Loading info...</p>}>
             <p style={{ margin: "0 0 10px 0" }}>

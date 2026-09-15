@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "@solidjs/router";
 import PageHeader from "../../../components/ui/PageHeader";
 import LaporanTable from "../../kkl-management/laporan/pages/Table";
 import { useAuth } from "../../../services/authStore";
+import { usePagePermissions } from "../../../hooks/usePagePermissions";
+import { printTableToPdf } from "../../../utils/printTableToPdf";
 import { dosenAPI } from "../../master-data/dosen/service/dosen.api";
 import { kklAgtAPI } from "../../kkl-management/kkl-agt/service/kkl-agt.api";
 import { kklKlpAPI } from "../../kkl-management/kkl-klp/service/kkl-klp.api";
@@ -11,10 +13,28 @@ import { laporanAPI } from "../../kkl-management/laporan/service/laporan.api";
 import type { KklAgt } from "../../kkl-management/kkl-agt/type/kkl-agt";
 import type { Laporan } from "../../kkl-management/laporan/type/laporan";
 
+const IconPrinter = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <polyline points="6 9 6 2 18 2 18 9" />
+    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+    <rect x="6" y="14" width="12" height="8" />
+  </svg>
+);
+
 const LaporanAnggotaPage: Component = () => {
   const auth = useAuth();
   const params = useParams();
   const navigate = useNavigate();
+  const permissions = usePagePermissions();
   const agtId = Number(params.agtId);
 
   const [agt, setAgt] = createSignal<KklAgt | null>(null);
@@ -85,6 +105,36 @@ const LaporanAnggotaPage: Component = () => {
 
   onMount(fetchData);
 
+  const handlePrint = () => {
+    const studentName = agt()?.mahasiswa?.nama || "Mahasiswa";
+    const studentNim = agt()?.mahasiswa?.nim || "-";
+
+    printTableToPdf({
+      title: `Data Laporan Kegiatan KKL - ${studentName}`,
+      subtitle: `NIM: ${studentNim} | Total: ${laporans().length} Laporan Kegiatan`,
+      headers: [
+        "No",
+        "Mahasiswa",
+        "NIM",
+        "Tanggal",
+        "Jam",
+        "Aktifitas",
+        "Jarak",
+        "Status",
+      ],
+      rows: laporans().map((p, i) => [
+        String(i + 1),
+        p.mahasiswa?.nama || agt()?.mahasiswa?.nama || "-",
+        p.mahasiswa?.nim || agt()?.mahasiswa?.nim || "-",
+        p.tanggal,
+        p.jam,
+        p.aktifitas,
+        p.jarak ? `${p.jarak} m` : "-",
+        p.status,
+      ]),
+    });
+  };
+
   return (
     <div class="user-page">
       <div style={{ "margin-bottom": "20px" }}>
@@ -104,6 +154,19 @@ const LaporanAnggotaPage: Component = () => {
       <PageHeader
         title={agt() ? `Laporan: ${agt()?.mahasiswa?.nama}` : "Laporan Anggota"}
         description={agt() ? `Daftar laporan KKL ${agt()?.mahasiswa?.nama} (${agt()?.mahasiswa?.nim}).` : "Memuat laporan anggota."}
+        action={
+          <Show when={permissions.canReport()}>
+            <button
+              class="btn-secondary"
+              onClick={handlePrint}
+              disabled={loading() || laporans().length === 0}
+              title="Cetak laporan kegiatan anggota kelompok"
+            >
+              <IconPrinter />
+              Cetak Data
+            </button>
+          </Show>
+        }
       />
 
       <Show when={error()}>
